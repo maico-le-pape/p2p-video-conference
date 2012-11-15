@@ -42,6 +42,11 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			src/parser/gttparser.cpp
 			src/parser/httpparser.cpp
 			src/parser/lineparser.cpp)
+			
+target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/main.cpp)
+add_executable(video_conference src/main.cpp
+				 src/user.cpp
+				 src/videoconferencep2p.cpp)
+
 target_link_libraries(video_conference epyx)
