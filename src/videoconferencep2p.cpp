@@ -14,6 +14,13 @@
     limitations under the License.
 */
 
-
 #include "videoconferencep2p.h"
 
+VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa )
+{
+}
+
+void VideoConferenceP2P::add ( string u_name, SockAddress sa )
+{
+    users.insert ( std::pair<SockAddress, User> ( sa, User ( u_name, sa ) ) );
+}

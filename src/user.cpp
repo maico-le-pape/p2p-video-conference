@@ -17,26 +17,27 @@
 
 #include "user.h"
 
-user::user ( string s, SockAddress sa )
+User::User ( string s, SockAddress sa )
 {
     name = s;
     address = sa;
 }
 
-string user::getName()
+string User::getName()
 {
     return name;
 }
 
-SockAddress user::getAddress()
+SockAddress User::getAddress()
 {
     return address;
 }
 
-short unsigned int user::getDelay()
+short unsigned int User::getDelay()
 {
     return delay;
 }
+
 
 
 

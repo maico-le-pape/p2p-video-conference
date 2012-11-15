@@ -18,10 +18,22 @@
 #ifndef VIDEOCONFERENCEP2P_H
 #define VIDEOCONFERENCEP2P_H
 
+#include <map>
+#include "net/sockaddress.h"
+#include "user.h"
+
+using namespace std;
+using namespace Epyx;
+
 class VideoConferenceP2P {
 
 private:
     void initialisation();
+    map<SockAddress, User> users;
+
+public:
+    void add ( string u_name, SockAddress sa );
+    VideoConferenceP2P ( SockAddress sa );
 };
 
 #endif // VIDEOCONFERENCEP2P_H

@@ -24,10 +24,10 @@
 using namespace std;
 using namespace Epyx;
 
-class user {
+class User {
 
 public:
-    user ( string, SockAddress );
+    User ( string, SockAddress );
     string getName();
     SockAddress getAddress();
     unsigned short int getDelay();
