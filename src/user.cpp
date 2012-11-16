@@ -23,21 +23,22 @@ User::User ( string s, SockAddress sa )
     address = sa;
 }
 
-string User::getName()
+string User::getName() const
 {
     return name;
 }
 
-SockAddress User::getAddress()
+SockAddress User::getAddress() const
 {
     return address;
 }
 
-short unsigned int User::getDelay()
+short unsigned int User::getDelay() const
 {
     return delay;
 }
 
-
-
-
+void User::updateDelay ( short unsigned int delay )
+{
+    this->delay = delay;
+}

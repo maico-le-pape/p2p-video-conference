@@ -11,12 +11,14 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-find_package(Boost 1.40 REQUIRED thread)
+find_package(Boost 1.40 REQUIRED thread date_time)
 find_package(Vpx REQUIRED)
 find_package(SDL REQUIRED)
 
+include (UseDoxygen)
+
 link_directories(${Boost_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS} ${SDL_INCLUDE_DIR})
+include_directories(src ${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS} ${SDL_INCLUDE_DIR})
 
 add_library(epyx STATIC src/core/actor-manager.cpp
 			src/core/actor.cpp
@@ -45,8 +47,11 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/main.cpp
-				 src/user.cpp
-				 src/videoconferencep2p.cpp)
+add_executable(video_conference src/packets/rttreplypacket.cpp
+				src/packets/rttrequestpacket.cpp
+				src/rttmanager.cpp
+				src/main.cpp
+				src/user.cpp
+				src/videoconferencep2p.cpp)
 
 target_link_libraries(video_conference epyx)

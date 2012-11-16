@@ -15,29 +15,17 @@
 */
 
 
-#ifndef USER_H
-#define USER_H
+#include "rttmanager.h"
 
-#include <string>
-#include "net/sockaddress.h"
+RTTManager::RTTManager ( VideoConferenceP2P& conference ) :
+    _conference ( conference )
+{
 
-using namespace std;
-using namespace Epyx;
+}
 
-class User {
-
-public:
-    User ( string, SockAddress );
-    string getName() const;
-    SockAddress getAddress() const;
-    unsigned short int getDelay() const;
-    void updateDelay(unsigned short int delay);
-
-private:
-    string name;
-    SockAddress address;
-    unsigned short int delay;
-
-};
-
-#endif // USER_H
+void RTTManager::processRTT ( const RttReplyPacket& packet )
+{
+    int delay = ( boost::posix_time::microsec_clock::local_time() -
+                  packet.sendingTime ).total_milliseconds() / 2;
+    _conference.getUser ( packet.source ).updateDelay ( delay );
+}

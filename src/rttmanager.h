@@ -15,29 +15,20 @@
 */
 
 
-#ifndef USER_H
-#define USER_H
+#ifndef RTTMANAGER_H
+#define RTTMANAGER_H
 
-#include <string>
-#include "net/sockaddress.h"
+#include "videoconferencep2p.h"
+#include "packets/rttreplypacket.h"
 
-using namespace std;
-using namespace Epyx;
-
-class User {
-
+class RTTManager {
+  
 public:
-    User ( string, SockAddress );
-    string getName() const;
-    SockAddress getAddress() const;
-    unsigned short int getDelay() const;
-    void updateDelay(unsigned short int delay);
-
+  RTTManager(VideoConferenceP2P& conference);
+  void processRTT(const RttReplyPacket& packet);
+  
 private:
-    string name;
-    SockAddress address;
-    unsigned short int delay;
-
+  VideoConferenceP2P& _conference;
 };
 
-#endif // USER_H
+#endif // RTTMANAGER_H

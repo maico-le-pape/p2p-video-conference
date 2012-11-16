@@ -15,6 +15,7 @@
 */
 
 #include "videoconferencep2p.h"
+#include <boost/assert.hpp>
 
 VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa )
 {
@@ -23,4 +24,11 @@ VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa )
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 {
     users.insert ( std::pair<SockAddress, User> ( sa, User ( u_name, sa ) ) );
+}
+
+User& VideoConferenceP2P::getUser ( SockAddress address )
+{
+    auto it = users.find(address);
+    BOOST_ASSERT(it != users.end());
+    return it->second;
 }

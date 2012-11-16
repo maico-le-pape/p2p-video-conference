@@ -34,6 +34,7 @@ private:
 public:
     void add ( string u_name, SockAddress sa );
     VideoConferenceP2P ( SockAddress sa );
+    User& getUser ( SockAddress address );
 };
 
 #endif // VIDEOCONFERENCEP2P_H
