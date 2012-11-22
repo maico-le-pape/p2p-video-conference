@@ -22,19 +22,28 @@
 #include "net/sockaddress.h"
 #include "user.h"
 
+class RTTManager;
+
 using namespace std;
 using namespace Epyx;
 
 class VideoConferenceP2P {
 
 private:
-    void initialisation();
+    //void initialisation();
     map<SockAddress, User> users;
+    RTTManager* rttmanager;
 
 public:
     void add ( string u_name, SockAddress sa );
+    const SockAddress host;
     VideoConferenceP2P ( SockAddress sa );
     User& getUser ( SockAddress address );
+    void updateDelay ( SockAddress address, short unsigned int delay );
+    const map<SockAddress, User> getUsers();
+
+protected:
+    const char* debug;
 };
 
 #endif // VIDEOCONFERENCEP2P_H

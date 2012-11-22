@@ -39,6 +39,7 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			src/net/tcpsocket.cpp
 			src/net/udpserver.cpp
 			src/net/udpsocket.cpp
+			src/net/socket.cpp
 			src/net/uri.cpp
 			src/parser/gttpacket.cpp
 			src/parser/gttparser.cpp

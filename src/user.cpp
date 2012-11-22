@@ -16,8 +16,9 @@
 
 
 #include "user.h"
+#include "net/udpsocket.h"
 
-User::User ( string s, SockAddress sa )
+User::User ( string s, SockAddress sa ) : socket ( new UDPSocket ( sa ) )
 {
     name = s;
     address = sa;
@@ -41,4 +42,21 @@ short unsigned int User::getDelay() const
 void User::updateDelay ( short unsigned int delay )
 {
     this->delay = delay;
+}
+
+/**
+ * @brief Send data through the socket
+ *
+ * @param data sent data
+ * @param size size of data to be sent
+ * @return number of sent bytes
+ */
+void User:: send ( const void *data, int size )
+{
+    socket->send ( data, size );
+}
+
+string User::getIpStr()
+{
+  return address.getIpStr();
 }

@@ -18,17 +18,22 @@
 #ifndef RTTMANAGER_H
 #define RTTMANAGER_H
 
-#include "videoconferencep2p.h"
 #include "packets/rttreplypacket.h"
+#include "core/thread.h"
 
-class RTTManager {
-  
+class VideoConferenceP2P;
+
+using namespace Epyx;
+
+class RTTManager : public Thread {
+
 public:
-  RTTManager(VideoConferenceP2P& conference);
-  void processRTT(const RttReplyPacket& packet);
-  
+    RTTManager ( VideoConferenceP2P* conference );
+    void processRTT ( const RttReplyPacket& packet );
+    void run();
+
 private:
-  VideoConferenceP2P& _conference;
+    VideoConferenceP2P* _conference;
 };
 
 #endif // RTTMANAGER_H

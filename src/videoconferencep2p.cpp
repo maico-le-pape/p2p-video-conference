@@ -15,10 +15,16 @@
 */
 
 #include "videoconferencep2p.h"
+#include "core/thread.h"
 #include <boost/assert.hpp>
+#include "rttmanager.h"
+#include "core/log.h"
 
-VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa )
+VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa )
 {
+    rttmanager = new RTTManager ( this );
+    rttmanager->setThreadName("RTTManager");
+    rttmanager->start();
 }
 
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
@@ -28,7 +34,24 @@ void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 
 User& VideoConferenceP2P::getUser ( SockAddress address )
 {
-    auto it = users.find(address);
-    BOOST_ASSERT(it != users.end());
+    auto it = users.find ( address );
+    BOOST_ASSERT ( it != users.end() );
     return it->second;
 }
+
+const map< SockAddress, User > VideoConferenceP2P::getUsers()
+{
+  return users;
+}
+
+
+void VideoConferenceP2P::updateDelay ( SockAddress address,
+                                       short unsigned int delay )
+{
+    auto it = users.find ( address );
+    if ( it != users.end() )
+        Epyx::log::debug << "update Delay of a non existent address" <<
+                         address.getIpStr() << Epyx::log::endl;
+    it->second.updateDelay ( delay );
+}
+

@@ -16,8 +16,11 @@
 
 
 #include "rttmanager.h"
+#include "videoconferencep2p.h"
+#include "packets/rttrequestpacket.h"
+#include "core/log.h"
 
-RTTManager::RTTManager ( VideoConferenceP2P& conference ) :
+RTTManager::RTTManager ( VideoConferenceP2P* conference ) :
     _conference ( conference )
 {
 
@@ -27,5 +30,23 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
 {
     int delay = ( boost::posix_time::microsec_clock::local_time() -
                   packet.sendingTime ).total_milliseconds() / 2;
-    _conference.getUser ( packet.source ).updateDelay ( delay );
+    _conference->updateDelay ( packet.source, delay );
+}
+
+void RTTManager::run()
+{
+    while ( true ) {
+        map< SockAddress, User > users = _conference->getUsers();
+        for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
+
+            RttRequestPacket rp ( _conference->host,dest->first );
+            const byte_str packet = rp.build();
+
+            Epyx::log::debug << "Sending "<< rp << " to " <<
+                             dest->second.getIpStr()
+                             << Epyx::log::endl;
+            dest->second.send ( packet.data() , packet.length() );
+        }
+        sleep ( 2 );
+    }
 }

@@ -20,6 +20,8 @@
 
 #include <string>
 #include "net/sockaddress.h"
+#include "net/udpsocket.h"
+#include "boost/shared_ptr.hpp"
 
 using namespace std;
 using namespace Epyx;
@@ -30,13 +32,16 @@ public:
     User ( string, SockAddress );
     string getName() const;
     SockAddress getAddress() const;
+    string getIpStr();
     unsigned short int getDelay() const;
-    void updateDelay(unsigned short int delay);
+    void updateDelay ( unsigned short int delay );
+    void send(const void *data, int size);
 
 private:
     string name;
     SockAddress address;
     unsigned short int delay;
+    boost::shared_ptr<UDPSocket> socket;
 
 };
 

@@ -50,12 +50,12 @@ int main ( int argc, char*argv[] )
                           boost::lexical_cast<std::string> ( client_id ), 4242 )
         );
 
-    for ( int i = 0; i < clients_number; i++ ) {
+    for ( int i = 1; i <= clients_number; i++ ) {
         if ( i != client_id ) {
             vc.add ( "User number " +
                      boost::lexical_cast<std::string> ( i ),
                      SockAddress ( std::string ( "127.0.0." ) +
-                                   boost::lexical_cast<std::string> ( i + 2 ),
+                                   boost::lexical_cast<std::string> ( i ),
                                    4242
                                  ) );
             Epyx::log::info << "Other client number " << i << " created" <<
@@ -63,7 +63,10 @@ int main ( int argc, char*argv[] )
         }
     }
 
+    sleep(10);
     Epyx::log::flushAndQuit();
+    
+    
 }
 
 
