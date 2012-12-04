@@ -67,6 +67,16 @@ namespace Epyx
          */
         int send(const void *data, int size);
 
+	/**
+         * @brief Send data through the socket to the specified address 
+         *
+         * @param address the SockAddress to send to
+         * @param data sent data
+         * @param size size of data to be sent
+         * @return number of sent bytes
+         */
+        int sendTo(SockAddress address, const void *data, int size);
+
         /**
          * @brief Receive data from the socket
          *

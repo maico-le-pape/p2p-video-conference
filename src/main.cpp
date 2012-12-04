@@ -22,8 +22,8 @@
 
 /**
  * @brief ...
- * @details For the test we suppose we have n clients with ip 127.0.0.x:4242
- * where x in 2 to (n+1).
+ * @details For the test we suppose we have n clients with
+ * ip 127.0.0.1:(1000+i) where x in 2 to (n+1).
  * @param argv second and third aguments must be number_of_clients client_id
  **/
 int main ( int argc, char*argv[] )
@@ -34,39 +34,29 @@ int main ( int argc, char*argv[] )
     if ( argc != 3 ) {
         std::cout << "Use : videoconferencep2p n k" << std::endl;
         std::cout << "n is the total number of clients "
-                  "and k the number of the current client" <<
-                  std::endl;
+                  "and k the number of the current client" << std::endl;
+        return EXIT_FAILURE;
     }
 
     int clients_number = std::atoi ( argv[1] );
     int client_id = std::atoi ( argv[2] );
 
-    Epyx::log::debug << "Read " << clients_number << " " <<client_id <<
-                     Epyx::log::endl;
+    //Epyx::log::debug << "Read " << clients_number << " " <<client_id <<
+    //                 Epyx::log::endl;
 
-    VideoConferenceP2P vc =
-        VideoConferenceP2P (
-            SockAddress ( std::string ( "127.0.0." ) +
-                          boost::lexical_cast<std::string> ( client_id ), 4242 )
-        );
+    VideoConferenceP2P vc ( SockAddress ( "127.0.0.1", 10000 + client_id ) );
 
-    for ( int i = 1; i <= clients_number; i++ ) {
+    for ( int i = 0; i < clients_number; i++ ) {
         if ( i != client_id ) {
-            vc.add ( "User number " +
-                     boost::lexical_cast<std::string> ( i ),
-                     SockAddress ( std::string ( "127.0.0." ) +
-                                   boost::lexical_cast<std::string> ( i ),
-                                   4242
-                                 ) );
+            vc.add ( "User number " + boost::lexical_cast<std::string> ( i ),
+                     SockAddress ( "127.0.0.1", 10000 + i ) );
             Epyx::log::info << "Other client number " << i << " created" <<
                             Epyx::log::endl;
         }
     }
 
-    sleep(10);
+    sleep ( 10 );
     Epyx::log::flushAndQuit();
-    
-    
 }
 
 

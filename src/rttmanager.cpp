@@ -38,14 +38,14 @@ void RTTManager::run()
     while ( true ) {
         map< SockAddress, User > users = _conference->getUsers();
         for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
+            if ( _conference->host != dest->first ) {
 
-            RttRequestPacket rp ( _conference->host,dest->first );
-            const byte_str packet = rp.build();
+                RttRequestPacket rp ( _conference->host,dest->first );
+                const byte_str packet = rp.build();
 
-            Epyx::log::debug << "Sending "<< rp << " to " <<
-                             dest->second.getIpStr()
-                             << Epyx::log::endl;
-            dest->second.send ( packet.data() , packet.length() );
+                Epyx::log::debug << rp << Epyx::log::endl;
+                dest->second.send ( packet.data() , packet.length() );
+            }
         }
         sleep ( 2 );
     }

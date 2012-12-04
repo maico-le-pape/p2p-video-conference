@@ -22,6 +22,7 @@
 
 #include "server.h"
 #include "udpsocket.h"
+#include "net/sockaddress.h"
 
 namespace Epyx
 {
@@ -52,8 +53,15 @@ namespace Epyx
          */
         int recv(void *data, int size);
 
-        // send is not implemented yet
-        //int send(const void *data, int size);
+        /**
+         * @brief Receive data for the server
+         *
+         * @param address SocketAddress to send to
+         * @param data received data buffer
+         * @param size size of data buffer
+         * @return number of received bytes
+         */
+        int sendTo(SockAddress address, const void *data, int size);
 
         /**
          * @brief Bind socket to a specific device

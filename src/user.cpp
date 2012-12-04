@@ -17,8 +17,10 @@
 
 #include "user.h"
 #include "net/udpsocket.h"
+#include "videoconferencep2p.h"
 
-User::User ( string s, SockAddress sa ) : socket ( new UDPSocket ( sa ) )
+User::User ( string s, SockAddress sa, VideoConferenceP2P& vc )
+    : video_conference ( vc )
 {
     name = s;
     address = sa;
@@ -53,10 +55,10 @@ void User::updateDelay ( short unsigned int delay )
  */
 void User:: send ( const void *data, int size )
 {
-    socket->send ( data, size );
+    video_conference.getServer().sendTo (address, data, size );
 }
 
 string User::getIpStr()
 {
-  return address.getIpStr();
+    return address.getIpStr();
 }

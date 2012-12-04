@@ -48,7 +48,8 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/packets/rttreplypacket.cpp
+add_executable(video_conference src/receiver.cpp 
+				src/packets/rttreplypacket.cpp
 				src/packets/rttrequestpacket.cpp
 				src/rttmanager.cpp
 				src/main.cpp

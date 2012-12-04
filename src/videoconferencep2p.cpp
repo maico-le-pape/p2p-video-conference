@@ -19,17 +19,21 @@
 #include <boost/assert.hpp>
 #include "rttmanager.h"
 #include "core/log.h"
+#include "user.h"
 
-VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa )
+VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
+    server ( sa )
 {
     rttmanager = new RTTManager ( this );
-    rttmanager->setThreadName("RTTManager");
+    rttmanager->setThreadName ( "RTTManager" );
     rttmanager->start();
 }
 
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 {
-    users.insert ( std::pair<SockAddress, User> ( sa, User ( u_name, sa ) ) );
+    users.insert ( std::pair<SockAddress, User> ( sa, User ( u_name, sa, *this )
+                                                )
+                 );
 }
 
 User& VideoConferenceP2P::getUser ( SockAddress address )
@@ -41,7 +45,7 @@ User& VideoConferenceP2P::getUser ( SockAddress address )
 
 const map< SockAddress, User > VideoConferenceP2P::getUsers()
 {
-  return users;
+    return users;
 }
 
 
@@ -53,5 +57,10 @@ void VideoConferenceP2P::updateDelay ( SockAddress address,
         Epyx::log::debug << "update Delay of a non existent address" <<
                          address.getIpStr() << Epyx::log::endl;
     it->second.updateDelay ( delay );
+}
+
+UDPServer& VideoConferenceP2P::getServer()
+{
+    return server;
 }
 

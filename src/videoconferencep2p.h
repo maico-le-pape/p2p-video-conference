@@ -20,9 +20,11 @@
 
 #include <map>
 #include "net/sockaddress.h"
+#include "net/udpserver.h"
 #include "user.h"
 
 class RTTManager;
+
 
 using namespace std;
 using namespace Epyx;
@@ -41,9 +43,11 @@ public:
     User& getUser ( SockAddress address );
     void updateDelay ( SockAddress address, short unsigned int delay );
     const map<SockAddress, User> getUsers();
+    UDPServer& getServer();
 
 protected:
-    const char* debug;
+    char* debug;
+    UDPServer server;
 };
 
 #endif // VIDEOCONFERENCEP2P_H

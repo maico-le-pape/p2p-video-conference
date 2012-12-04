@@ -15,36 +15,24 @@
 */
 
 
-#ifndef USER_H
-#define USER_H
+#ifndef RECEIVER_H
+#define RECEIVER_H
 
-#include <string>
+#include "net/udpserver.h"
 #include "net/sockaddress.h"
-#include "net/udpsocket.h"
 #include "boost/shared_ptr.hpp"
+#include "core/thread.h"
 
-using namespace std;
 using namespace Epyx;
 
-class VideoConferenceP2P;
-
-class User {
+class Receiver : public Thread {
 
 public:
-    User ( string, SockAddress, VideoConferenceP2P& vc );
-    string getName() const;
-    SockAddress getAddress() const;
-    string getIpStr();
-    unsigned short int getDelay() const;
-    void updateDelay ( unsigned short int delay );
-    void send(const void *data, int size);
+    Receiver(SockAddress sa);
+    void run();
 
 private:
-    string name;
-    SockAddress address;
-    unsigned short int delay;
-    VideoConferenceP2P& video_conference;
-
+  boost::shared_ptr<UDPServer> server;
 };
 
-#endif // USER_H
+#endif // RECEIVER_H

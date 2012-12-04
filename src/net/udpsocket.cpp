@@ -38,7 +38,7 @@ namespace Epyx
         }
     }
 
-    int UDPSocket::send(const void *data, int size) {
+    int UDPSocket::sendTo(SockAddress address, const void *data, int size) {
         int bytes;
         struct sockaddr_storage saddr;
 
@@ -48,7 +48,8 @@ namespace Epyx
             this->create();
         }
         address.getSockAddr((struct sockaddr *) &saddr);
-        bytes = ::sendto(sock, data, size, 0, (const struct sockaddr *) &saddr, sizeof (saddr));
+        bytes = ::sendto(sock, data, size, 0, (const struct sockaddr *) &saddr,
+sizeof (saddr));
         if (localAddress.empty())
             this->updateLocalAddress();
         // TODO: Implement status error (ex. Conn closed, ...)
@@ -56,6 +57,10 @@ namespace Epyx
         if (bytes < 0)
             throw ErrException("UDPSocket", "sendto");
         return bytes;
+    }
+
+    int UDPSocket::send ( const void* data, int size ) {
+	sendTo(address, data, size);
     }
 
     int UDPSocket::recv(void * data, int size) {
@@ -100,3 +105,4 @@ namespace Epyx
             throw ErrException("UDPSocket", "setsockopt(SO_BINDTODEVICE)");
     }
 }
+
