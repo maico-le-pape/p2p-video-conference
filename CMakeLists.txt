@@ -49,9 +49,9 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/packets/fragmentpacket.cpp
-contrib/webm/vpxdecodersale.cpp
-				contrib/webm/videoframe.cpp
+add_executable(video_conference src/gui.cpp 
+				src/fragmentmanager.cpp 
+				src/frame.cpp 
 				src/receiver.cpp 
 				src/packets/rttreplypacket.cpp
 				src/packets/rttrequestpacket.cpp

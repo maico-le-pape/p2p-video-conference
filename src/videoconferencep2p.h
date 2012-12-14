@@ -24,7 +24,9 @@
 #include "user.h"
 #include "receiver.h"
 
+
 class RTTManager;
+class GUI;
 
 
 using namespace std;
@@ -52,6 +54,7 @@ private:
     map<SockAddress, User> users;
     RTTManager* rttManager;
     Receiver receiver;
+    GUI* gui;
 };
 
 #endif // VIDEOCONFERENCEP2P_H

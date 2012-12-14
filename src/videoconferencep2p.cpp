@@ -20,12 +20,15 @@
 #include "rttmanager.h"
 #include "core/log.h"
 #include "user.h"
+#include "gui.h"
 
 typedef std::pair<SockAddress, User> userEntry;
 
 VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
     server ( sa ),  receiver ( this )
 {
+    gui = new GUI ( this );
+
     rttManager = new RTTManager ( this );
     rttManager->setThreadName (
         "RTTManager " +
@@ -48,8 +51,8 @@ void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 void VideoConferenceP2P::printUsers()
 {
     for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
-      Epyx::log::debug << dest->first.getPort() << " => " <<
-dest->second.getName() << Epyx::log::endl;
+        Epyx::log::debug << dest->first.getPort() << " => " <<
+                         dest->second.getName() << Epyx::log::endl;
     }
 }
 

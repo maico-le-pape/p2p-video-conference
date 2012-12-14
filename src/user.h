@@ -22,11 +22,17 @@
 #include "net/sockaddress.h"
 #include "net/udpsocket.h"
 #include "boost/shared_ptr.hpp"
+#include <queue>
+#include "frame.h"
+#include "webm/framepacket.h"
+#include "fragmentmanager.h"
 
 using namespace std;
 using namespace Epyx;
 
 class VideoConferenceP2P;
+
+using namespace Epyx::webm;
 
 class User {
 
@@ -38,12 +44,16 @@ public:
     unsigned short int getDelay() const;
     void updateDelay ( unsigned short int delay );
     void send(const void *data, int size);
+    void receive ( FragmentPacket& fp);
+    void add ( Frame& f);
 
 private:
     string name;
     SockAddress address;
     unsigned short int delay;
     VideoConferenceP2P& video_conference;
+    priority_queue<Frame> frames;
+    FragmentManager fragmentManager;
 
 };
 

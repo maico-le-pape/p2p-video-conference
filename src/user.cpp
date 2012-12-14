@@ -41,6 +41,11 @@ short unsigned int User::getDelay() const
     return delay;
 }
 
+string User::getIpStr()
+{
+    return address.getIpStr();
+}
+
 void User::updateDelay ( short unsigned int delay )
 {
     this->delay = delay;
@@ -58,7 +63,15 @@ void User:: send ( const void *data, int size )
     video_conference.getServer().sendTo (address, data, size );
 }
 
-string User::getIpStr()
+void User::receive ( FragmentPacket& fp )
 {
-    return address.getIpStr();
+  fragmentManager.eat(fp);
 }
+
+void User::add ( Frame& f )
+{
+  frames.push(f);
+}
+
+
+

@@ -25,6 +25,9 @@
 #include "videoconferencep2p.h"
 #include "rttmanager.h"
 
+
+using namespace Epyx;
+
 Receiver::Receiver ( VideoConferenceP2P* vc ) : conference (vc)
 {
 
@@ -45,7 +48,6 @@ void Receiver::run()
 
         std::unique_ptr<GTTPacket> packet;
 
-        Epyx::log::debug << "Ecoute des messages" << Epyx::log::endl;
         while ( ( packet =  parser.getPacket() ) != nullptr ) {
 
             if ( packet->method.compare ( "RTTREQ" ) == 0 ) {
@@ -66,7 +68,11 @@ void Receiver::run()
 		
 		rttManager->processRTT(reply);
                 Epyx::log::debug << "Paquet non RTTREP" << Epyx::log::endl;
-            }
+            } else if ( packet->method.compare ( "DATA" ) == 0 ) {
+	      
+	    } else {
+	      log::debug << "Error: Unrecognized packet" << log::endl;
+	    }
         }
     }
 }
