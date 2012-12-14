@@ -21,6 +21,7 @@
 #include "core/log.h"
 #include "user.h"
 #include "gui.h"
+#include "sender.h"
 
 typedef std::pair<SockAddress, User> userEntry;
 
@@ -41,6 +42,12 @@ VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
         boost::lexical_cast<std::string> ( sa.getPort() )
     );
     receiver.start();
+    
+    sender = new Sender (this);
+    sender->setThreadName (
+        "Sender " +
+        boost::lexical_cast<std::string> ( sa.getPort() )
+    );
 }
 
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
@@ -89,5 +96,9 @@ RTTManager* VideoConferenceP2P::getRTTManager()
     return rttManager;
 }
 
+void VideoConferenceP2P::start()
+{
+  sender->start();
+}
 
 

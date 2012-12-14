@@ -27,7 +27,7 @@
 
 class RTTManager;
 class GUI;
-
+class Sender;
 
 using namespace std;
 using namespace Epyx;
@@ -44,6 +44,7 @@ public:
     UDPServer& getServer();
     RTTManager* getRTTManager();
     void printUsers();
+    void start();
 
 protected:
     char* debug;
@@ -55,6 +56,7 @@ private:
     RTTManager* rttManager;
     Receiver receiver;
     GUI* gui;
+    Sender* sender;
 };
 
 #endif // VIDEOCONFERENCEP2P_H
