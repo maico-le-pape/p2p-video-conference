@@ -19,13 +19,19 @@
 #define FRAGMENTPACKET_H
 
 #include "parser/gttpacket.h"
+#include "net/sockaddress.h"
+#include <boost/date_time/posix_time/ptime.hpp>
 
 using namespace Epyx;
 
 class FragmentPacket : public GTTPacket {
+    typedef boost::posix_time::ptime ptime;
 public:
-    FragmentPacket ( const byte_str& data, unsigned long packetTimestamp,
-                     unsigned char fragmentNumber );
+    FragmentPacket ( const byte_str& data, 
+		     ptime packetTimestamp,
+                     unsigned char fragmentNumber,
+		     unsigned int packetSize,
+		     SockAddress source );
     /**
      * @brief Parse GTT packet
      **/
@@ -38,8 +44,10 @@ public:
 
     byte_str data;
 
-    unsigned long packetTimestamp;
+    SockAddress source;
+    ptime packetTimestamp;
     unsigned char fragmentNumber;
+    unsigned int packetSize;
 
 private:
     /**
@@ -49,3 +57,4 @@ private:
 };
 
 #endif // FRAGMENTPACKET_H
+

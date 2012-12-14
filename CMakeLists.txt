@@ -49,10 +49,12 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/gui.cpp 
+add_executable(video_conference src/fragmentlist.cpp
+				src/gui.cpp 
 				src/fragmentmanager.cpp 
 				src/frame.cpp 
 				src/receiver.cpp 
+				src/packets/fragmentpacket.cpp
 				src/packets/rttreplypacket.cpp
 				src/packets/rttrequestpacket.cpp
 				src/rttmanager.cpp

@@ -15,25 +15,26 @@
 */
 
 
-#ifndef FRAGMENTMANAGER_H
-#define FRAGMENTMANAGER_H
+#ifndef FRAGMENTLIST_H
+#define FRAGMENTLIST_H
 
-#include "frame.h"
+#include <set>
 #include "packets/fragmentpacket.h"
-#include "fragmentlist.h"
-#include <boost/circular_buffer.hpp>
-#include <parser/gttparser.h>
 
-class FragmentManager {
+class FragmentList {
     typedef boost::posix_time::ptime ptime;
 public:
-    FragmentManager();
-    Frame* eat( FragmentPacket& fp);
-    static std::vector<FragmentPacket> cut(unsigned char* data, ssize_t size);
+    FragmentList(unsigned int packetSize, ptime packetTimestamp);
+    ~FragmentList();
+    void addFragment(const FragmentPacket &p);
+    bool isComplete() const;
+    byte_str getData() const;
+    ptime packetTimestamp;
     
 private:
-    boost::circular_buffer< FragmentList > packets;
-    Frame* readPacket(const byte_str& data, ptime time);
+    std::set<unsigned char> missingPackets;
+    unsigned char* data;
+    unsigned int packetSize;
 };
 
-#endif // FRAGMENTMANAGER_H
+#endif // FRAGMENTLIST_H

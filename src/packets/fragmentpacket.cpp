@@ -20,12 +20,18 @@
 #include "core/log.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/date_time/posix_time/time_formatters.hpp>
+#include <boost/date_time/posix_time/time_parsers.hpp>
 
 FragmentPacket::FragmentPacket ( const byte_str& data,
-                                 unsigned long packetTimestamp,
-                                 unsigned char fragmentNumber ) :
+                                 ptime packetTimestamp,
+                                 unsigned char fragmentNumber,
+                                 unsigned int packetSize,
+                                 SockAddress source ) :
     data ( data ), packetTimestamp ( packetTimestamp ),
-    fragmentNumber ( fragmentNumber )
+    fragmentNumber ( fragmentNumber ),
+    packetSize ( packetSize ),
+    source ( source )
 {
 }
 
@@ -48,11 +54,17 @@ FragmentPacket::FragmentPacket ( const GTTPacket& gttpkt )
 
     // Parse headers
     for ( auto it = gttpkt.headers.begin(); it != gttpkt.headers.end(); it++ ) {
-        if ( boost::iequals ( it->first, "Timestamp" ) )
-            packetTimestamp = boost::lexical_cast<long> ( it->second );
+        if ( boost::iequals ( it->first, "Time" ) )
+            packetTimestamp = boost::posix_time::time_from_string(it->second);
 
         if ( boost::iequals ( it->first, "Number" ) )
             fragmentNumber = boost::lexical_cast<long> ( it->second );
+
+        if ( boost::iequals ( it->first, "Size" ) )
+            packetSize = boost::lexical_cast<long> ( it->second );
+
+        if ( boost::iequals ( it->first, "Source" ) )
+            source = SockAddress ( it->second );
     }
 
     // Store data
@@ -70,8 +82,12 @@ void FragmentPacket::fillGttPacket ( GTTPacket& gttpkt ) const
 {
     gttpkt.protocol = "VCP2P";
     gttpkt.method = "FRAGMENT";
-    gttpkt.headers["Timestamp"] =
-        boost::lexical_cast<std::string> ( packetTimestamp );
-    gttpkt.headers["Number"] = boost::lexical_cast<std::string>(fragmentNumber);
+    gttpkt.headers["Time"] =
+        boost::posix_time::to_simple_string(packetTimestamp);
+    gttpkt.headers["Number"] =
+        boost::lexical_cast<std::string> ( fragmentNumber );
+    gttpkt.headers["Size"] =
+        boost::lexical_cast<std::string> ( packetSize );
+    gttpkt.headers["Source"] = source.toString();
     gttpkt.body = data;
 }
