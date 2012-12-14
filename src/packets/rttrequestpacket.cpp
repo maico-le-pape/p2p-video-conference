@@ -53,7 +53,7 @@ RttRequestPacket::RttRequestPacket ( const GTTPacket& gttpkt )
             destination = SockAddress ( it->second );
 
         if ( boost::iequals ( it->first, "Time" ) )
-            boost::posix_time::time_from_string ( it->second );
+            sendingTime = boost::posix_time::time_from_string ( it->second );
     }
 }
 

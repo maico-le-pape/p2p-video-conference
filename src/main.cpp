@@ -28,16 +28,17 @@
  **/
 int main ( int argc, char*argv[] )
 {
-    Epyx::Thread::init();
-    Epyx::log::init ( Epyx::log::CONSOLE );
-
     if ( argc != 3 ) {
         std::cout << "Use : videoconferencep2p n k" << std::endl;
         std::cout << "n is the total number of clients "
-                  "and k the number of the current client" << std::endl;
+                  "and k the number of the current client."
+		  "The first client is number 0" << std::endl;
         return EXIT_FAILURE;
     }
 
+    Epyx::Thread::init();
+    Epyx::log::init ( Epyx::log::CONSOLE );
+    
     int clients_number = std::atoi ( argv[1] );
     int client_id = std::atoi ( argv[2] );
 
@@ -54,8 +55,8 @@ int main ( int argc, char*argv[] )
                             Epyx::log::endl;
         }
     }
-
-    sleep ( 10 );
+    vc.printUsers();
+    sleep ( 50 );
     Epyx::log::flushAndQuit();
 }
 

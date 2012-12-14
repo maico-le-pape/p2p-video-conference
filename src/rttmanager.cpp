@@ -31,6 +31,10 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
     int delay = ( boost::posix_time::microsec_clock::local_time() -
                   packet.sendingTime ).total_milliseconds() / 2;
     _conference->updateDelay ( packet.source, delay );
+    Epyx::log::debug << "RTT update for " <<
+			 packet.source.getPort() <<
+			 " set to "<<
+			 delay << Epyx::log::endl;
 }
 
 void RTTManager::run()

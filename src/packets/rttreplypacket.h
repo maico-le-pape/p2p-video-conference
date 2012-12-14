@@ -60,6 +60,6 @@ private:
 /**
  * @brief Prints a short description of a RTT reply packet in an output stream
  **/
-std::ostream& operator<< ( std::ostream& os, RttReplyPacket& pkt );
+std::ostream& operator<< ( std::ostream& os, const RttReplyPacket& pkt );
 
 #endif // RTTREPLYPACKET_H

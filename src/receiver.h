@@ -23,16 +23,18 @@
 #include "boost/shared_ptr.hpp"
 #include "core/thread.h"
 
+class VideoConferenceP2P;
+
 using namespace Epyx;
 
 class Receiver : public Thread {
 
 public:
-    Receiver(SockAddress sa);
+    Receiver ( VideoConferenceP2P* vc );
     void run();
 
 private:
-  boost::shared_ptr<UDPServer> server;
+    VideoConferenceP2P* conference;
 };
 
 #endif // RECEIVER_H

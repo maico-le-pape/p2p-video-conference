@@ -22,6 +22,7 @@
 #include "net/sockaddress.h"
 #include "net/udpserver.h"
 #include "user.h"
+#include "receiver.h"
 
 class RTTManager;
 
@@ -31,11 +32,6 @@ using namespace Epyx;
 
 class VideoConferenceP2P {
 
-private:
-    //void initialisation();
-    map<SockAddress, User> users;
-    RTTManager* rttmanager;
-
 public:
     void add ( string u_name, SockAddress sa );
     const SockAddress host;
@@ -44,10 +40,18 @@ public:
     void updateDelay ( SockAddress address, short unsigned int delay );
     const map<SockAddress, User> getUsers();
     UDPServer& getServer();
+    RTTManager* getRTTManager();
+    void printUsers();
 
 protected:
     char* debug;
     UDPServer server;
+
+private:
+    //void initialisation();
+    map<SockAddress, User> users;
+    RTTManager* rttManager;
+    Receiver receiver;
 };
 
 #endif // VIDEOCONFERENCEP2P_H

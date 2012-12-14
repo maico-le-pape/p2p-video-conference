@@ -21,8 +21,11 @@
 #include "packets/rttreplypacket.h"
 #include "packets/rttrequestpacket.h"
 #include "core/log.h"
+#include "user.h"
+#include "videoconferencep2p.h"
+#include "rttmanager.h"
 
-Receiver::Receiver ( SockAddress sa ) : server ( new UDPServer ( sa ) )
+Receiver::Receiver ( VideoConferenceP2P* vc ) : conference (vc)
 {
 
 }
@@ -31,13 +34,18 @@ void Receiver::run()
 {
     GTTParser parser;
     int size;
+    UDPServer& server = conference->getServer();
+    RTTManager* rttManager = conference->getRTTManager();
+
     while ( true ) {
         const int MAX = 4096;
         byte* data = new byte[MAX];
-        size = server->recv ( data,MAX );
+        size = server.recv ( data,MAX );
         parser.eat ( byte_str ( data, size ) );
 
         std::unique_ptr<GTTPacket> packet;
+
+        Epyx::log::debug << "Ecoute des messages" << Epyx::log::endl;
         while ( ( packet =  parser.getPacket() ) != nullptr ) {
 
             if ( packet->method.compare ( "RTTREQ" ) == 0 ) {
@@ -46,13 +54,18 @@ void Receiver::run()
                 RttReplyPacket reply ( request.destination,
                                        request.source,
                                        request.sendingTime );
-                const byte_str packet = reply.build();
+                const byte_str replyPacket = reply.build();
 
-                Epyx::log::debug << reply << Epyx::log::endl;
-                //dest->second.send ( packet.data() , packet.length() );
-		
+                Epyx::log::debug <<  reply << Epyx::log::endl;
+                server.sendTo ( reply.destination,
+                                replyPacket.data(),
+                                replyPacket.size() );
+
             } else if ( packet->method.compare ( "RTTREP" ) == 0 ) {
-
+		RttReplyPacket reply ( * (packet.get() ) );
+		
+		rttManager->processRTT(reply);
+                Epyx::log::debug << "Paquet non RTTREP" << Epyx::log::endl;
             }
         }
     }

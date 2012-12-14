@@ -21,19 +21,36 @@
 #include "core/log.h"
 #include "user.h"
 
+typedef std::pair<SockAddress, User> userEntry;
+
 VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
-    server ( sa )
+    server ( sa ),  receiver ( this )
 {
-    rttmanager = new RTTManager ( this );
-    rttmanager->setThreadName ( "RTTManager" );
-    rttmanager->start();
+    rttManager = new RTTManager ( this );
+    rttManager->setThreadName (
+        "RTTManager " +
+        boost::lexical_cast<std::string> ( sa.getPort() )
+    );
+    rttManager->start();
+
+    receiver.setThreadName (
+        "Receiver "  +
+        boost::lexical_cast<std::string> ( sa.getPort() )
+    );
+    receiver.start();
 }
 
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 {
-    users.insert ( std::pair<SockAddress, User> ( sa, User ( u_name, sa, *this )
-                                                )
-                 );
+    users.insert ( userEntry ( sa,  User ( u_name,  sa,  *this ) ) );
+}
+
+void VideoConferenceP2P::printUsers()
+{
+    for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
+      Epyx::log::debug << dest->first.getPort() << " => " <<
+dest->second.getName() << Epyx::log::endl;
+    }
 }
 
 User& VideoConferenceP2P::getUser ( SockAddress address )
@@ -53,9 +70,9 @@ void VideoConferenceP2P::updateDelay ( SockAddress address,
                                        short unsigned int delay )
 {
     auto it = users.find ( address );
-    if ( it != users.end() )
+    if ( it == users.end() )
         Epyx::log::debug << "update Delay of a non existent address" <<
-                         address.getIpStr() << Epyx::log::endl;
+                         address.getPort() << Epyx::log::endl;
     it->second.updateDelay ( delay );
 }
 
@@ -63,4 +80,11 @@ UDPServer& VideoConferenceP2P::getServer()
 {
     return server;
 }
+
+RTTManager* VideoConferenceP2P::getRTTManager()
+{
+    return rttManager;
+}
+
+
 
