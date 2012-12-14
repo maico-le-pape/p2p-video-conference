@@ -18,7 +18,8 @@ find_package(SDL REQUIRED)
 include (UseDoxygen)
 
 link_directories(${Boost_LIBRARY_DIRS})
-include_directories(src ${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS} ${SDL_INCLUDE_DIR})
+include_directories(src contrib ${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS}
+${SDL_INCLUDE_DIR})
 
 add_library(epyx STATIC src/core/actor-manager.cpp
 			src/core/actor.cpp
@@ -48,7 +49,10 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/receiver.cpp 
+add_executable(video_conference src/packets/fragmentpacket.cpp
+contrib/webm/vpxdecodersale.cpp
+				contrib/webm/videoframe.cpp
+				src/receiver.cpp 
 				src/packets/rttreplypacket.cpp
 				src/packets/rttrequestpacket.cpp
 				src/rttmanager.cpp
@@ -56,4 +60,4 @@ add_executable(video_conference src/receiver.cpp
 				src/user.cpp
 				src/videoconferencep2p.cpp)
 
-target_link_libraries(video_conference epyx)
+target_link_libraries(video_conference epyx ${VPX_LIBRARIES} ${SDL_LIBRARY})
