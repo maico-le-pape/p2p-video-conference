@@ -28,7 +28,7 @@
 
 using namespace Epyx;
 
-Receiver::Receiver ( VideoConferenceP2P* vc ) : conference (vc)
+Receiver::Receiver ( VideoConferenceP2P* vc ) : conference ( vc )
 {
 
 }
@@ -65,16 +65,16 @@ void Receiver::run()
                                 replyPacket.size() );
 
             } else if ( packet->method.compare ( "RTTREP" ) == 0 ) {
-		RttReplyPacket reply ( * (packet.get() ) );
-		
-		rttManager->processRTT(reply);
+                RttReplyPacket reply ( * ( packet.get() ) );
+
+                rttManager->processRTT ( reply );
             } else if ( packet->method.compare ( "FRAGMENT" ) == 0 ) {
-	      FragmentPacket fragment ( * (packet.get()) );
-	      
-	      conference->getUser(fragment.source).receive(fragment);
-	    } else {
-	      log::debug << "Error: Unrecognized packet" << log::endl;
-	    }
+                FragmentPacket fragment ( * ( packet.get() ) );
+
+                conference->getUser ( fragment.source ).receive ( fragment );
+            } else {
+                log::debug << "Error: Unrecognized packet" << log::endl;
+            }
         }
     }
 }

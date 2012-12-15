@@ -32,7 +32,7 @@ public:
     static std::vector<FragmentPacket> cut ( char* data, unsigned int size );
 
 private:
-    std::list< FragmentList > packets;
+    FragmentList fragmentList;
     Frame* readPacket ( const byte_str& data, ptime time );
 };
 

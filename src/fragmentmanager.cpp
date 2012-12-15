@@ -25,24 +25,12 @@ FragmentManager::FragmentManager()
 
 Frame* FragmentManager::eat ( FragmentPacket& fp )
 {
-    for ( auto it = packets.begin(); it != packets.end(); it++ ) {
-        if ( it->packetTimestamp == fp.packetTimestamp ) {
-            it->addFragment ( fp );
-
-            if ( it->isComplete() )
-                return readPacket ( it->getData() , fp.packetTimestamp );
-            else
-                return nullptr;
-        }
-    }
-
-    if(packets.size() == 4)
-	packets.pop_front();
-    packets.push_back ( FragmentList ( fp.packetSize, fp.packetTimestamp ) );
-    packets.back().addFragment ( fp );
-
-    if ( packets.back().isComplete() )
-        return readPacket ( packets.back().getData() , fp.packetTimestamp );
+    if(fragmentList.packetTimestamp != fp.packetTimestamp)
+	fragmentList = FragmentList(fp.packetSize, fp.packetTimestamp);
+    fragmentList.addFragment(fp);
+    
+    if ( fragmentList.isComplete() )
+        return readPacket ( fragmentList.getData() , fp.packetTimestamp );
     else
         return nullptr;
 }
