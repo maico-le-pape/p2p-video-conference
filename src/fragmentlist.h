@@ -24,8 +24,8 @@
 class FragmentList {
     typedef boost::posix_time::ptime ptime;
 public:
+    FragmentList();
     FragmentList(unsigned int packetSize, ptime packetTimestamp);
-    ~FragmentList();
     void addFragment(const FragmentPacket &p);
     bool isComplete() const;
     byte_str getData() const;
@@ -33,8 +33,7 @@ public:
     
 private:
     std::set<unsigned char> missingPackets;
-    unsigned char* data;
-    unsigned int packetSize;
+    byte_str data;
 };
 
 #endif // FRAGMENTLIST_H

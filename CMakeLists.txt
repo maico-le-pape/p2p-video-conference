@@ -4,7 +4,7 @@ project(p2p-video-conference)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "-std=gnu++11")
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -pedantic")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -Wall -Wextra -pedantic")
 endif()
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules")

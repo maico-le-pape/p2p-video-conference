@@ -18,23 +18,21 @@
 #include "fragmentlist.h"
 #include <string.h>
 
-FragmentList::FragmentList ( unsigned int packetSize,
-			     ptime packetTimestamp ) :
-    packetTimestamp(packetTimestamp), packetSize(packetSize)
+FragmentList::FragmentList()
 {
-    for(int i = 0; i < packetSize/1500 + (packetSize%1500 != 0?1:0); i++)
-	missingPackets.insert(i);
-    data = new unsigned char[packetSize];
 }
 
-FragmentList::~FragmentList()
+FragmentList::FragmentList ( unsigned int packetSize,
+			     ptime packetTimestamp ) :
+    packetTimestamp(packetTimestamp), data(packetSize, ' ')
 {
-    delete[] data;
+    for(int i = 0; i < packetSize/1500 + (packetSize%150 != 0?1:0); i++)
+	missingPackets.insert(i);
 }
 
 void FragmentList::addFragment ( const FragmentPacket& p )
 {
-    memcpy(data + 1500 * p.fragmentNumber, p.data.data(), p.data.size());
+    data.replace(1500*p.fragmentNumber, p.data.size(), p.data);
     missingPackets.erase(p.fragmentNumber);
 }
 
@@ -45,5 +43,5 @@ bool FragmentList::isComplete() const
 
 byte_str FragmentList::getData() const
 {
-    return byte_str(data, packetSize);
+    return data;
 }
