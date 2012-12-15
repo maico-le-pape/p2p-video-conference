@@ -40,13 +40,14 @@ void Receiver::run()
     UDPServer& server = conference->getServer();
     RTTManager* rttManager = conference->getRTTManager();
 
+    const int MAX = 4096;
+    byte data[MAX];
+    std::unique_ptr<GTTPacket> packet;
+	
     while ( true ) {
-        const int MAX = 4096;
-        byte* data = new byte[MAX];
+        
         size = server.recv ( data,MAX );
         parser.eat ( byte_str ( data, size ) );
-
-        std::unique_ptr<GTTPacket> packet;
 
         while ( ( packet =  parser.getPacket() ) != nullptr ) {
 
