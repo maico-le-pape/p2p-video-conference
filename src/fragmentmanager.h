@@ -21,8 +21,8 @@
 #include "frame.h"
 #include "packets/fragmentpacket.h"
 #include "fragmentlist.h"
-#include <boost/circular_buffer.hpp>
 #include <parser/gttparser.h>
+#include <list>
 
 class FragmentManager {
     typedef boost::posix_time::ptime ptime;
@@ -32,7 +32,7 @@ public:
     static std::vector<FragmentPacket> cut ( char* data, ssize_t size );
 
 private:
-    boost::circular_buffer< FragmentList > packets;
+    std::list< FragmentList > packets;
     Frame* readPacket ( const byte_str& data, ptime time );
 };
 

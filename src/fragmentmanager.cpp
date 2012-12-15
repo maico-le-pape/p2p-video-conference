@@ -19,14 +19,13 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-FragmentManager::FragmentManager() :
-    packets ( 4 )
+FragmentManager::FragmentManager()
 {
 }
 
 Frame* FragmentManager::eat ( FragmentPacket& fp )
 {
-    for ( auto it = packets.begin(); it != packets.end(); it++ )
+    for ( auto it = packets.begin(); it != packets.end(); it++ ) {
         if ( it->packetTimestamp == fp.packetTimestamp ) {
             it->addFragment ( fp );
 
@@ -35,7 +34,10 @@ Frame* FragmentManager::eat ( FragmentPacket& fp )
             else
                 return nullptr;
         }
+    }
 
+    if(packets.size() == 4)
+	packets.pop_front();
     packets.push_back ( FragmentList ( fp.packetSize, fp.packetTimestamp ) );
     packets.back().addFragment ( fp );
 

@@ -34,7 +34,7 @@ public:
 
 private:
     VideoConferenceP2P* conference;
-    unsigned int maxDelay;
+    unsigned int maxDelay = 0;
     static const unsigned int threshold = 300;
 };
 
