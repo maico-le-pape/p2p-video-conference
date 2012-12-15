@@ -40,7 +40,7 @@ public:
     VideoConferenceP2P ( SockAddress sa );
     User& getUser ( SockAddress address );
     void updateDelay ( SockAddress address, short unsigned int delay );
-    const map<SockAddress, User> getUsers();
+    const map< SockAddress, User >& getUsers();
     UDPServer& getServer();
     RTTManager* getRTTManager();
     void printUsers();

@@ -36,7 +36,7 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
         unsigned int previousDelay =
             conference->getUser ( packet.source ).getDelay();
         if ( previousDelay == maxDelay ) {
-            map< SockAddress, User > users = conference->getUsers();
+            const map< SockAddress, User >& users = conference->getUsers();
             maxDelay = 0;
             for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
                 unsigned int d = dest->second.getDelay();

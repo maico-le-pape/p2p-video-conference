@@ -70,7 +70,7 @@ User& VideoConferenceP2P::getUser ( SockAddress address )
     return it->second;
 }
 
-const map< SockAddress, User > VideoConferenceP2P::getUsers()
+const map< SockAddress, User >& VideoConferenceP2P::getUsers()
 {
     return users;
 }
