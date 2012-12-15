@@ -46,7 +46,7 @@ public:
     void updateDelay ( unsigned short int delay );
     void send(const void *data, int size);
     void receive ( FragmentPacket& fp);
-    void add ( Frame& f);
+    void add ( Frame* f);
 
 private:
     string name;
@@ -55,7 +55,6 @@ private:
     VideoConferenceP2P& video_conference;
     priority_queue<Frame> frames;
     FragmentManager fragmentManager;
-    
 
 };
 

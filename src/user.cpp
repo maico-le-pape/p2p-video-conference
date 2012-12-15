@@ -65,12 +65,15 @@ void User:: send ( const void *data, int size )
 
 void User::receive ( FragmentPacket& fp )
 {
-  fragmentManager.eat(fp);
+  Frame* f = fragmentManager.eat(fp);
+  if ( f != nullptr)
+    add(f);
 }
 
-void User::add ( Frame& f )
+void User::add ( Frame* f )
 {
-  frames.push(f);
+  frames.push(*f);
+  delete f;
 }
 
 

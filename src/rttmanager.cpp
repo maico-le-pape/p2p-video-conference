@@ -28,17 +28,18 @@ RTTManager::RTTManager ( VideoConferenceP2P* vc ) :
 
 void RTTManager::processRTT ( const RttReplyPacket& packet )
 {
-    int delay = ( boost::posix_time::microsec_clock::local_time() -
-                  packet.sendingTime ).total_milliseconds() / 2;
+    unsigned int delay = ( boost::posix_time::microsec_clock::local_time() -
+                           packet.sendingTime ).total_milliseconds() / 2;
 
 
     if ( delay > maxDelay && delay < threshold ) {
-        int previousDelay = conference->getUser ( packet.source ).getDelay();
+        unsigned int previousDelay =
+            conference->getUser ( packet.source ).getDelay();
         if ( previousDelay == maxDelay ) {
             map< SockAddress, User > users = conference->getUsers();
             maxDelay = 0;
             for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
-                int d = dest->second.getDelay();
+                unsigned int d = dest->second.getDelay();
                 if ( d < threshold ) {
                     maxDelay = std::max<int> ( maxDelay, dest->second.getDelay()
                                              );

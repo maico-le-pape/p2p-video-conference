@@ -68,8 +68,9 @@ void Receiver::run()
 		
 		rttManager->processRTT(reply);
             } else if ( packet->method.compare ( "FRAGMENT" ) == 0 ) {
-	      log::debug << "TODO: Fragment packets" << log::endl;
-	      log::debug << "TODO: Fragment packets" << log::endl;
+	      FragmentPacket fragment ( * (packet.get()) );
+	      
+	      conference->getUser(fragment.source).receive(fragment);
 	    } else {
 	      log::debug << "Error: Unrecognized packet" << log::endl;
 	    }
