@@ -32,18 +32,17 @@ int main ( int argc, char*argv[] )
         std::cout << "Use : videoconferencep2p n k" << std::endl;
         std::cout << "n is the total number of clients "
                   "and k the number of the current client."
-		  "The first client is number 0" << std::endl;
+                  "The first client is number 0" << std::endl;
         return EXIT_FAILURE;
     }
 
     Epyx::Thread::init();
     Epyx::log::init ( Epyx::log::CONSOLE );
-    
+
     int clients_number = std::atoi ( argv[1] );
     int client_id = std::atoi ( argv[2] );
 
-    //Epyx::log::debug << "Read " << clients_number << " " <<client_id <<
-    //                 Epyx::log::endl;
+    Epyx::log::debug << "Program launched"  <<  Epyx::log::endl;
 
     VideoConferenceP2P vc ( SockAddress ( "127.0.0.1", 10000 + client_id ) );
 
@@ -51,14 +50,16 @@ int main ( int argc, char*argv[] )
         if ( i != client_id ) {
             vc.add ( "User number " + boost::lexical_cast<std::string> ( i ),
                      SockAddress ( "127.0.0.1", 10000 + i ) );
-            Epyx::log::info << "Other client number " << i << " created" <<
-                            Epyx::log::endl;
+            /* Epyx::log::info << "Other client number " << i << " created" <<
+                            Epyx::log::endl; */
         }
     }
-    vc.printUsers();
+    //vc.printUsers();
     vc.start();
     sleep ( 50 );
     Epyx::log::flushAndQuit();
+    
+    Epyx::log::debug << "Program ended"  <<  Epyx::log::endl;
 }
 
 

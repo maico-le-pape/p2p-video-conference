@@ -45,19 +45,19 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
                                              );
                 }
             }
-            Epyx::log::debug << "Max delay updated " <<
+           /* Epyx::log::debug << "Max delay updated " <<
                              previousDelay << " => "<<
                              maxDelay <<
-                             Epyx::log::endl;
+                             Epyx::log::endl; */
         }
     }
 
     conference->updateDelay ( packet.source, delay );
 
-    Epyx::log::debug << "RTT update for " <<
+    /* Epyx::log::debug << "RTT update for " <<
                      packet.source.getPort() <<
                      " set to "<<
-                     delay << Epyx::log::endl;
+                     delay << Epyx::log::endl; */
 }
 
 void RTTManager::run()
@@ -70,7 +70,7 @@ void RTTManager::run()
                 RttRequestPacket rp ( conference->host,dest->first );
                 const byte_str packet = rp.build();
 
-                Epyx::log::debug << rp << Epyx::log::endl;
+                //Epyx::log::debug << rp << Epyx::log::endl;
                 dest->second.send ( packet.data() , packet.length() );
             }
         }

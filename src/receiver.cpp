@@ -59,7 +59,7 @@ void Receiver::run()
                                        request.sendingTime );
                 const byte_str replyPacket = reply.build();
 
-                Epyx::log::debug <<  reply << Epyx::log::endl;
+                //Epyx::log::debug <<  reply << Epyx::log::endl;
                 server.sendTo ( reply.destination,
                                 replyPacket.data(),
                                 replyPacket.size() );

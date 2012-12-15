@@ -72,6 +72,7 @@ void User::receive ( FragmentPacket& fp )
 
 void User::add ( Frame* f )
 {
+  std:cout << "Packet completed" << std::endl;
   frames.push(*f);
   delete f;
 }
