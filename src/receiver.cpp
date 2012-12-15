@@ -67,9 +67,9 @@ void Receiver::run()
 		RttReplyPacket reply ( * (packet.get() ) );
 		
 		rttManager->processRTT(reply);
-                Epyx::log::debug << "Paquet non RTTREP" << Epyx::log::endl;
-            } else if ( packet->method.compare ( "DATA" ) == 0 ) {
-	      
+            } else if ( packet->method.compare ( "FRAGMENT" ) == 0 ) {
+	      log::debug << "TODO: Fragment packets" << log::endl;
+	      log::debug << "TODO: Fragment packets" << log::endl;
 	    } else {
 	      log::debug << "Error: Unrecognized packet" << log::endl;
 	    }

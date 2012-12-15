@@ -17,14 +17,26 @@
 
 #include "gui.h"
 #include "videoconferencep2p.h"
+#include <QLabel>
 
-GUI::GUI ( VideoConferenceP2P* vc ) : conference ( vc )
+
+GUI::GUI ( VideoConferenceP2P* vc ) : conference ( vc ),
+    layout ( new QGridLayout() )
 {
-
+   /* for ( int i = 0; i < 3; ++i ) {
+        labels[i] = new QLabel ( tr ( "Line %1:" ).arg ( i + 1 ) );
+        lineEdits[i] = new QLineEdit;
+        layout->addWidget ( labels[i], i + 1, 0 );
+        layout->addWidget ( lineEdits[i], i + 1, 1 );
+    } */
 }
 
 void GUI::run()
 {
+
+   // QWidget
+
+
 
 }
 

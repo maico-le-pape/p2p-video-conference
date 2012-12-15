@@ -14,8 +14,10 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 find_package(Boost 1.40 REQUIRED thread date_time)
 find_package(Vpx REQUIRED)
 find_package(SDL REQUIRED)
+find_package(Qt4 REQUIRED)
 
 include (UseDoxygen)
+include (${QT_USE_FILE})
 
 link_directories(${Boost_LIBRARY_DIRS})
 include_directories(src contrib ${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS}
@@ -63,4 +65,5 @@ add_executable(video_conference src/sender.cpp
 				src/user.cpp
 				src/videoconferencep2p.cpp)
 
-target_link_libraries(video_conference epyx ${VPX_LIBRARIES} ${SDL_LIBRARY})
+target_link_libraries(video_conference epyx ${VPX_LIBRARIES} ${SDL_LIBRARY}
+${QT_LIBRARIES})

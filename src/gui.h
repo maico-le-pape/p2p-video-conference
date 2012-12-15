@@ -19,6 +19,7 @@
 #define GUI_H
 
 #include "core/thread.h"
+#include <QGridLayout>
 
 class VideoConferenceP2P;
 
@@ -32,6 +33,7 @@ public:
 
 private:
     VideoConferenceP2P* conference;
+    QGridLayout* layout;
 };
 
 #endif // GUI_H

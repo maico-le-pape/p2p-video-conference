@@ -18,11 +18,16 @@
 #ifndef FRAME_H
 #define FRAME_H
 
+#include <QPixmap>
+
 class Frame {
 
 public:
-    Frame();
-    bool operator< (const Frame& B) const;
+    Frame ( const unsigned char * data, int size );
+    bool operator< ( const Frame& B ) const;
+    
+private:
+  QPixmap image;
 };
 
 #endif // FRAME_H

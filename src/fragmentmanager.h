@@ -28,12 +28,12 @@ class FragmentManager {
     typedef boost::posix_time::ptime ptime;
 public:
     FragmentManager();
-    Frame* eat( FragmentPacket& fp);
-    static std::vector<FragmentPacket> cut(unsigned char* data, ssize_t size);
-    
+    Frame* eat ( FragmentPacket& fp );
+    static std::vector<FragmentPacket> cut ( char* data, ssize_t size );
+
 private:
     boost::circular_buffer< FragmentList > packets;
-    Frame* readPacket(const byte_str& data, ptime time);
+    Frame* readPacket ( const byte_str& data, ptime time );
 };
 
 #endif // FRAGMENTMANAGER_H

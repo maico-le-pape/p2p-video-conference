@@ -28,10 +28,11 @@ FragmentPacket::FragmentPacket ( const byte_str& data,
                                  unsigned char fragmentNumber,
                                  unsigned int packetSize,
                                  SockAddress source ) :
-    data ( data ), packetTimestamp ( packetTimestamp ),
+    data ( data ),
+    source ( source ),
+    packetTimestamp ( packetTimestamp ),
     fragmentNumber ( fragmentNumber ),
-    packetSize ( packetSize ),
-    source ( source )
+    packetSize ( packetSize )
 {
 }
 
@@ -55,7 +56,8 @@ FragmentPacket::FragmentPacket ( const GTTPacket& gttpkt )
     // Parse headers
     for ( auto it = gttpkt.headers.begin(); it != gttpkt.headers.end(); it++ ) {
         if ( boost::iequals ( it->first, "Time" ) )
-            packetTimestamp = boost::posix_time::time_from_string(it->second);
+            packetTimestamp = boost::posix_time::time_from_string ( it->second
+                                                                  );
 
         if ( boost::iequals ( it->first, "Number" ) )
             fragmentNumber = boost::lexical_cast<long> ( it->second );
@@ -83,9 +85,9 @@ void FragmentPacket::fillGttPacket ( GTTPacket& gttpkt ) const
     gttpkt.protocol = "VCP2P";
     gttpkt.method = "FRAGMENT";
     gttpkt.headers["Time"] =
-        boost::posix_time::to_simple_string(packetTimestamp);
+        boost::posix_time::to_simple_string ( packetTimestamp );
     gttpkt.headers["Number"] =
-        boost::lexical_cast<std::string> ( fragmentNumber );
+        boost::lexical_cast<std::string> ( (int) fragmentNumber );
     gttpkt.headers["Size"] =
         boost::lexical_cast<std::string> ( packetSize );
     gttpkt.headers["Source"] = source.toString();

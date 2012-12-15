@@ -28,12 +28,14 @@ using namespace Epyx;
 class RTTManager : public Thread {
 
 public:
-    RTTManager ( VideoConferenceP2P* conference );
+    RTTManager ( VideoConferenceP2P* vc );
     void processRTT ( const RttReplyPacket& packet );
     void run();
 
 private:
-    VideoConferenceP2P* _conference;
+    VideoConferenceP2P* conference;
+    unsigned int maxDelay;
+    static const unsigned int threshold = 300;
 };
 
 #endif // RTTMANAGER_H

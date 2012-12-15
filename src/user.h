@@ -26,6 +26,7 @@
 #include "frame.h"
 #include "webm/framepacket.h"
 #include "fragmentmanager.h"
+#include <QLabel>
 
 using namespace std;
 using namespace Epyx;
@@ -54,6 +55,7 @@ private:
     VideoConferenceP2P& video_conference;
     priority_queue<Frame> frames;
     FragmentManager fragmentManager;
+    
 
 };
 

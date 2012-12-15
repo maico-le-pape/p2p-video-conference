@@ -48,16 +48,16 @@ Frame* FragmentManager::eat ( FragmentPacket& fp )
 Frame* FragmentManager::readPacket ( const byte_str& data,
 FragmentManager::ptime time )
 {
-    return new Frame();
+    return new Frame(data.data(), data.size());
 }
 
-std::vector< FragmentPacket > FragmentManager::cut ( unsigned char* data,
+std::vector< FragmentPacket > FragmentManager::cut ( char* data,
         ssize_t size )
 {
     unsigned int nbOfPackets = size / 1500 + ( size % 1500 == 0 ? 0 : 1 );
     std::vector<FragmentPacket> res;
 
-    for ( int i = 0; i < nbOfPackets; i++ ) {
+    for ( unsigned int i = 0; i < nbOfPackets; i++ ) {
         unsigned char* fragmentData =
             new unsigned char[i == nbOfPackets - 1 ? size % 1500 : 1500];
         memcpy ( fragmentData, data + 1500 * i,

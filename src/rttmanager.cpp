@@ -20,8 +20,8 @@
 #include "packets/rttrequestpacket.h"
 #include "core/log.h"
 
-RTTManager::RTTManager ( VideoConferenceP2P* conference ) :
-    _conference ( conference )
+RTTManager::RTTManager ( VideoConferenceP2P* vc ) :
+    conference ( vc )
 {
 
 }
@@ -30,21 +30,43 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
 {
     int delay = ( boost::posix_time::microsec_clock::local_time() -
                   packet.sendingTime ).total_milliseconds() / 2;
-    _conference->updateDelay ( packet.source, delay );
+
+
+    if ( delay > maxDelay && delay < threshold ) {
+        int previousDelay = conference->getUser ( packet.source ).getDelay();
+        if ( previousDelay == maxDelay ) {
+            map< SockAddress, User > users = conference->getUsers();
+            maxDelay = 0;
+            for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
+                int d = dest->second.getDelay();
+                if ( d < threshold ) {
+                    maxDelay = std::max<int> ( maxDelay, dest->second.getDelay()
+                                             );
+                }
+            }
+            Epyx::log::debug << "Max delay updated " <<
+                             previousDelay << " => "<<
+                             maxDelay <<
+                             Epyx::log::endl;
+        }
+    }
+
+    conference->updateDelay ( packet.source, delay );
+
     Epyx::log::debug << "RTT update for " <<
-			 packet.source.getPort() <<
-			 " set to "<<
-			 delay << Epyx::log::endl;
+                     packet.source.getPort() <<
+                     " set to "<<
+                     delay << Epyx::log::endl;
 }
 
 void RTTManager::run()
 {
     while ( true ) {
-        map< SockAddress, User > users = _conference->getUsers();
+        map< SockAddress, User > users = conference->getUsers();
         for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
-            if ( _conference->host != dest->first ) {
+            if ( conference->host != dest->first ) {
 
-                RttRequestPacket rp ( _conference->host,dest->first );
+                RttRequestPacket rp ( conference->host,dest->first );
                 const byte_str packet = rp.build();
 
                 Epyx::log::debug << rp << Epyx::log::endl;

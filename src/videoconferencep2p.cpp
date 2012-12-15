@@ -42,8 +42,8 @@ VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
         boost::lexical_cast<std::string> ( sa.getPort() )
     );
     receiver.start();
-    
-    sender = new Sender (this);
+
+    sender = new Sender ( this );
     sender->setThreadName (
         "Sender " +
         boost::lexical_cast<std::string> ( sa.getPort() )
@@ -98,7 +98,7 @@ RTTManager* VideoConferenceP2P::getRTTManager()
 
 void VideoConferenceP2P::start()
 {
-  sender->start();
+    sender->start();
 }
 
 

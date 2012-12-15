@@ -19,6 +19,7 @@
 #define SENDER_H
 
 #include "core/thread.h"
+#include "core/log.h"
 
 class VideoConferenceP2P;
 

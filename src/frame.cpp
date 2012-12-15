@@ -16,14 +16,22 @@
 
 
 #include "frame.h"
+#include <QByteArray>
+#include <QImageReader>
+#include <QBuffer>
 
-Frame::Frame()
+Frame::Frame ( const unsigned char* data, int size )
 {
-
+    QByteArray message = QByteArray::fromRawData (
+                             reinterpret_cast<const char * > ( data ),
+                             size );
+    QBuffer buffer ( &message );
+    QImageReader in ( &buffer, "JPG" );
+    image = QPixmap::fromImageReader ( &in );
 }
 
 bool Frame::operator< ( const Frame& B ) const
 {
-  return true;
+    return true;
 }
 
