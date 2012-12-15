@@ -64,6 +64,7 @@ void Sender::run()
                 // Epyx::log::debug << fp << Epyx::log::endl;
             }
         }
+        delete[] memblock;
         usleep(41000);
     }
 }
