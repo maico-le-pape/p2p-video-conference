@@ -18,7 +18,7 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-#include <QPixmap>
+#include <QImage>
 
 class Frame {
 
@@ -27,7 +27,7 @@ public:
     bool operator< ( const Frame& B ) const;
     
 private:
-  QPixmap image;
+  QImage image;
 };
 
 #endif // FRAME_H

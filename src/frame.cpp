@@ -27,7 +27,7 @@ Frame::Frame ( const unsigned char* data, int size )
                              size );
     QBuffer buffer ( &message );
     QImageReader in ( &buffer, "JPG" );
-    image = QPixmap::fromImageReader ( &in );
+    image = in.read();
 }
 
 bool Frame::operator< ( const Frame& B ) const
