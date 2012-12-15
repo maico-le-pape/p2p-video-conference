@@ -29,7 +29,7 @@ class FragmentManager {
 public:
     FragmentManager();
     Frame* eat ( FragmentPacket& fp );
-    static std::vector<FragmentPacket> cut ( char* data, ssize_t size );
+    static std::vector<FragmentPacket> cut ( char* data, unsigned int size );
 
 private:
     std::list< FragmentList > packets;

@@ -54,19 +54,21 @@ FragmentManager::ptime time )
 }
 
 std::vector< FragmentPacket > FragmentManager::cut ( char* data,
-        ssize_t size )
+        unsigned int size )
 {
     unsigned int nbOfPackets = size / 1500 + ( size % 1500 == 0 ? 0 : 1 );
     std::vector<FragmentPacket> res;
+    
+    byte_str data_str(reinterpret_cast<unsigned char*>(data), size);
 
     for ( unsigned int i = 0; i < nbOfPackets; i++ ) {
-        unsigned char* fragmentData =
-            new unsigned char[i == nbOfPackets - 1 ? size % 1500 : 1500];
-        memcpy ( fragmentData, data + 1500 * i,
-                 i == nbOfPackets - 1 ? size % 1500 : 1500 );
-        res.insert(res.end(), FragmentPacket ( byte_str ( fragmentData, i ==
-nbOfPackets - 1
-                                             ? size % 1500 : 1500 ),
+	byte_str fragmentData;
+	try {
+	     fragmentData = data_str.substr(1500*i, 1500);
+	} catch(std::out_of_range &e) {
+	    std::cout << e.what() << std::endl;
+	}
+        res.insert(res.end(), FragmentPacket ( fragmentData, 
 		boost::posix_time::microsec_clock::local_time(), i, size,
                                   SockAddress() ));
     }
