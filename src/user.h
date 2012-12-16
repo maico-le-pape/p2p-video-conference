@@ -28,6 +28,7 @@
 #include "fragmentmanager.h"
 #include <QLabel>
 #include <boost/date_time/posix_time/ptime.hpp>
+#include <QMutex>
 
 using namespace std;
 using namespace Epyx;
@@ -57,6 +58,7 @@ private:
     VideoConferenceP2P& video_conference;
     priority_queue<Frame> frames;
     FragmentManager fragmentManager;
+    mutable QMutex mutex_delay;
 
 };
 

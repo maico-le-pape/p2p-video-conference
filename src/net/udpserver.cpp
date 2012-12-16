@@ -29,6 +29,7 @@ namespace Epyx
 
 
     int UDPServer::sendTo(SockAddress address, const void *data, int size) {
+	QMutexLocker locker (&mutex_sendTo);
         return sock.sendTo(address, data, size);
     }
 

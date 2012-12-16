@@ -23,6 +23,7 @@
 #include "server.h"
 #include "udpsocket.h"
 #include "net/sockaddress.h"
+#include <QMutex>
 
 namespace Epyx
 {
@@ -71,6 +72,7 @@ namespace Epyx
 
     private:
         UDPSocket sock;
+	QMutex mutex_sendTo;
     };
 }
 #endif /* EPYX_UDPSERVER_H */

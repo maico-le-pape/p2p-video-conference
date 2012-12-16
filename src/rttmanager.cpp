@@ -34,21 +34,22 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
 
     if ( delay > maxDelay && delay < threshold ) {
         unsigned int previousDelay =
-            conference->getUser ( packet.source ).getDelay();
+            conference->getUser ( packet.source )->getDelay();
         if ( previousDelay == maxDelay ) {
-            const map< SockAddress, User >& users = conference->getUsers();
+            const map< SockAddress, User* >& users = conference->getUsers();
             maxDelay = 0;
             for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
-                unsigned int d = dest->second.getDelay();
+                unsigned int d = dest->second->getDelay();
                 if ( d < threshold ) {
-                    maxDelay = std::max<int> ( maxDelay, dest->second.getDelay()
+                    maxDelay = std::max<int> ( maxDelay,
+                                               dest->second->getDelay()
                                              );
                 }
             }
-           /* Epyx::log::debug << "Max delay updated " <<
-                             previousDelay << " => "<<
-                             maxDelay <<
-                             Epyx::log::endl; */
+            /* Epyx::log::debug << "Max delay updated " <<
+                              previousDelay << " => "<<
+                              maxDelay <<
+                              Epyx::log::endl; */
         }
     }
 
@@ -63,7 +64,7 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
 void RTTManager::run()
 {
     while ( true ) {
-        map< SockAddress, User > users = conference->getUsers();
+        const map< SockAddress, User*>& users = conference->getUsers();
         for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
             if ( conference->host != dest->first ) {
 
@@ -71,7 +72,7 @@ void RTTManager::run()
                 const byte_str packet = rp.build();
 
                 //Epyx::log::debug << rp << Epyx::log::endl;
-                dest->second.send ( packet.data() , packet.length() );
+                dest->second->send ( packet.data() , packet.length() );
             }
         }
         sleep ( 2 );

@@ -38,9 +38,9 @@ public:
     void add ( string u_name, SockAddress sa );
     const SockAddress host;
     VideoConferenceP2P ( SockAddress sa );
-    User& getUser ( SockAddress address );
+    User* getUser ( SockAddress address );
     void updateDelay ( SockAddress address, short unsigned int delay );
-    const map< SockAddress, User >& getUsers();
+    const map< SockAddress, User* >& getUsers();
     UDPServer& getServer();
     RTTManager* getRTTManager();
     void printUsers();
@@ -52,7 +52,7 @@ protected:
 
 private:
     //void initialisation();
-    map<SockAddress, User> users;
+    map<SockAddress, User*> users;
     RTTManager* rttManager;
     Receiver receiver;
     GUI* gui;

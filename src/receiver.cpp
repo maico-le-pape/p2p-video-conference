@@ -71,7 +71,7 @@ void Receiver::run()
             } else if ( packet->method.compare ( "FRAGMENT" ) == 0 ) {
                 FragmentPacket fragment ( * ( packet.get() ) );
 
-                conference->getUser ( fragment.source ).receive ( fragment );
+                conference->getUser ( fragment.source )->receive ( fragment );
             } else {
                 log::debug << "Error: Unrecognized packet" << log::endl;
             }

@@ -51,7 +51,7 @@ void Sender::run()
 
         std::vector<FragmentPacket> list =
             FragmentManager::cut ( memblock, size );
-        map< SockAddress, User > users = conference->getUsers();
+        const map< SockAddress, User* >& users = conference->getUsers();
 
         for ( unsigned int i = 0; i < list.size(); i++ ) {
             FragmentPacket fp = list[i];
@@ -59,12 +59,12 @@ void Sender::run()
             for ( auto dest = users.begin() ; dest != users.end(); dest++ ) {
                 fp.source = conference->host;
                 const byte_str packet = fp.build ();
-                dest->second.send ( packet.data() , packet.length() );
+                dest->second->send ( packet.data() , packet.length() );
 
                 // Epyx::log::debug << fp << Epyx::log::endl;
             }
         }
         delete[] memblock;
-        usleep(41000);
+        usleep ( 41000 );
     }
 }

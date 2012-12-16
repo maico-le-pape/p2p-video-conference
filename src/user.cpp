@@ -38,6 +38,7 @@ SockAddress User::getAddress() const
 
 short unsigned int User::getDelay() const
 {
+    QMutexLocker lock ( &mutex_delay );
     return delay;
 }
 
@@ -48,6 +49,7 @@ string User::getIpStr()
 
 void User::updateDelay ( short unsigned int delay )
 {
+    QMutexLocker lock ( &mutex_delay );
     this->delay = delay;
 }
 
@@ -66,8 +68,8 @@ void User:: send ( const void* data, int size )
 void User::receive ( FragmentPacket& fp )
 {
     fragmentManager.eat ( fp );
-    if(fragmentManager.hasCompleteFrame())
-	add(fragmentManager.getCompleteFrame());
+    if ( fragmentManager.hasCompleteFrame() )
+        add ( fragmentManager.getCompleteFrame() );
 }
 
 void User::add ( Frame f )

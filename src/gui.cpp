@@ -40,7 +40,7 @@ void GUI::addUser ( SockAddress sa )
     QLabel* video = new QLabel;
     layout->addWidget ( video, line, column );
     QString nameString  =
-        QString::fromStdString ( conference->getUser ( sa ).getName() );
+        QString::fromStdString ( conference->getUser ( sa )->getName() );
     QLabel* name = new QLabel ( nameString );
     log::debug << "Adding user " << nameString.toStdString() << log::endl;
     layout->addWidget ( name, line + 1, column++ );
@@ -67,5 +67,5 @@ void GUI::update()
     for ( auto it = videos.begin(); it != videos.end(); it++ )
         it.value()->setPixmap (
             QPixmap::fromImage ( conference->getUser ( it.key() )
-                                 .getLatestFrame ( maxTime ) ) ) ;
+                                 ->getLatestFrame ( maxTime ) ) ) ;
 }
