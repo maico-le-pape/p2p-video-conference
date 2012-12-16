@@ -23,6 +23,7 @@
 #include "net/udpserver.h"
 #include "user.h"
 #include "receiver.h"
+#include <QMutex>
 
 
 class RTTManager;
@@ -57,6 +58,7 @@ private:
     Receiver receiver;
     GUI* gui;
     Sender* sender;
+    QMutex mutex_user;
 };
 
 #endif // VIDEOCONFERENCEP2P_H
