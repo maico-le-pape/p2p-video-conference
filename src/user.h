@@ -48,7 +48,7 @@ public:
     void updateDelay ( unsigned short int delay );
     void send(const void *data, int size);
     void receive ( FragmentPacket& fp);
-    void add ( Frame f);
+    void add ( Frame* f);
     QImage getLatestFrame(ptime maxTime);
 
 private:
@@ -56,10 +56,9 @@ private:
     SockAddress address;
     unsigned short int delay;
     VideoConferenceP2P& video_conference;
-    priority_queue<Frame> frames;
+    priority_queue<Frame*, std::vector<Frame*>, FrameCompare> frames;
     FragmentManager fragmentManager;
     mutable QMutex mutex_delay;
-
 };
 
 #endif // USER_H

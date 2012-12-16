@@ -21,6 +21,7 @@
 #include <QImage>
 #include <core/common.h>
 #include <boost/date_time/posix_time/ptime.hpp>
+#include <functional>
 
 class Frame {
     typedef boost::posix_time::ptime ptime;
@@ -34,6 +35,13 @@ public:
 private:
     QImage image;
     ptime timestamp;
+};
+
+struct FrameCompare : public std::binary_function<Frame*, Frame*, bool>
+{
+    bool operator()(const Frame* a, const Frame* b) {
+	return *a < *b;
+    }
 };
 
 #endif // FRAME_H

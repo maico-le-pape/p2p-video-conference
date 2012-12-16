@@ -30,7 +30,7 @@ public:
     FragmentManager();
     void eat ( FragmentPacket& fp );
     bool hasCompleteFrame() const;
-    Frame getCompleteFrame() const;
+    Frame* getCompleteFrame() const;
     static std::vector<FragmentPacket> cut ( char* data, unsigned int size );
 
 private:

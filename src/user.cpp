@@ -72,9 +72,9 @@ void User::receive ( FragmentPacket& fp )
         add ( fragmentManager.getCompleteFrame() );
 }
 
-void User::add ( Frame f )
+void User::add ( Frame* f )
 {
-    f.setDelay ( delay );
+    f->setDelay( delay );
     frames.push ( f );
 }
 
@@ -85,8 +85,8 @@ QImage User::getLatestFrame ( User::ptime maxTime )
     if ( frames.empty() )
         return image;
 
-    while ( frames.top().getTime() < maxTime ) {
-        image = frames.top().getImage();
+    while ( frames.top()->getTime() < maxTime ) {
+        image = frames.top()->getImage();
         frames.pop();
     }
 

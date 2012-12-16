@@ -36,9 +36,9 @@ bool FragmentManager::hasCompleteFrame() const
     return fragmentList.isComplete();
 }
 
-Frame FragmentManager::getCompleteFrame( ) const
+Frame* FragmentManager::getCompleteFrame( ) const
 {
-    return Frame ( fragmentList.getData(),
+    return new Frame ( fragmentList.getData(),
 	boost::posix_time::microsec_clock::local_time());
 }
 
