@@ -77,21 +77,25 @@ void User::receive ( FragmentPacket& fp )
 
 void User::add ( Frame* f )
 {
-    f->setDelay( delay );
+    QMutexLocker lock ( &mutex_frames );
+    f->setDelay ( delay );
     frames.push ( f );
 }
 
 QImage User::getLatestFrame ( User::ptime maxTime )
 {
+    QMutexLocker lock ( &mutex_frames );
     QImage image;
 
-    if ( frames.empty() == true) {
+    if ( frames.empty() == true ) {
         return image;
     }
 
-    while ( frames.top()->getTime() < maxTime ) {
-        image = frames.top()->getImage();
+    while ( ! ( frames.empty() ) && frames.top()->getTime() < maxTime ) {
+        Frame* frame = frames.top();
+        image = frame->getImage();
         frames.pop();
+        delete frame;
     }
 
     return image;

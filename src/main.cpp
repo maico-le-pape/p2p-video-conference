@@ -60,7 +60,6 @@ int main ( int argc, char*argv[] )
     //vc.printUsers();
     vc.start();
     app.exec();
-    sleep(50);
     Epyx::log::debug << "Program ended"  <<  Epyx::log::endl;
     Epyx::log::flushAndQuit();
 }

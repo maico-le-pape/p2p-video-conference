@@ -59,6 +59,7 @@ private:
     priority_queue<Frame*, std::vector<Frame*>, FrameCompare> frames;
     FragmentManager fragmentManager;
     mutable QMutex mutex_delay;
+    mutable QMutex mutex_frames;
 };
 
 #endif // USER_H
