@@ -43,9 +43,9 @@ void Receiver::run()
     const int MAX = 4096;
     byte data[MAX];
     std::unique_ptr<GTTPacket> packet;
-	
+
     while ( true ) {
-        
+
         size = server.recv ( data,MAX );
         parser.eat ( byte_str ( data, size ) );
 
@@ -70,13 +70,19 @@ void Receiver::run()
                 rttManager->processRTT ( reply );
             } else if ( packet->method.compare ( "FRAGMENT" ) == 0 ) {
                 FragmentPacket fragment ( * ( packet.get() ) );
-
-                conference->getUser ( fragment.source )->receive ( fragment );
+                if ( display )
+                    conference->getUser ( fragment.source )->
+                    receive ( fragment );
             } else {
                 log::debug << "Error: Unrecognized packet" << log::endl;
             }
         }
     }
+}
+
+void Receiver::setDisplay ( bool d )
+{
+  display = d;
 }
 
 

@@ -20,6 +20,8 @@
 #include <iostream>
 #include "boost/lexical_cast.hpp"
 
+const int sendingDelay = 1000 / 24;
+
 Sender::Sender ( VideoConferenceP2P* vc ) : conference ( vc )
 {
 
@@ -65,6 +67,8 @@ void Sender::run()
             }
         }
         delete[] memblock;
-        usleep ( 41000 );
+        usleep ( sendingDelay*1000 );
     }
 }
+
+

@@ -20,6 +20,7 @@
 #include "core/log.h"
 #include "boost/lexical_cast.hpp"
 #include <QApplication>
+#include "boost/algorithm/string.hpp"
 
 /**
  * @brief ...
@@ -29,10 +30,10 @@
  **/
 int main ( int argc, char*argv[] )
 {
-    QApplication app(argc, argv);
-    
-    if ( argc != 3 ) {
-        std::cout << "Use : videoconferencep2p n k" << std::endl;
+    QApplication app ( argc, argv );
+
+    if ( argc != 3 && argc != 4) {
+        std::cout << "Use : videoconferencep2p n k [display=true]" << std::endl;
         std::cout << "n is the total number of clients "
                   "and k the number of the current client."
                   "The first client is number 0" << std::endl;
@@ -57,7 +58,12 @@ int main ( int argc, char*argv[] )
                             Epyx::log::endl; */
         }
     }
-    //vc.printUsers();
+
+    if ( argc == 4 ) {
+        string display = argv[3];
+        if ( boost::iequals ( display, "true" ) )
+            vc.display ( false );
+    }
     vc.start();
     app.exec();
     Epyx::log::debug << "Program ended"  <<  Epyx::log::endl;

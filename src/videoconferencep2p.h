@@ -46,6 +46,7 @@ public:
     RTTManager* getRTTManager();
     void printUsers();
     void start();
+    void display( bool d);
 
 protected:
     char* debug;
@@ -59,6 +60,7 @@ private:
     GUI* gui;
     Sender* sender;
     QMutex mutex_user;
+    bool display_vc = true;
 };
 
 #endif // VIDEOCONFERENCEP2P_H

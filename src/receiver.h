@@ -32,9 +32,11 @@ class Receiver : public Thread {
 public:
     Receiver ( VideoConferenceP2P* vc );
     void run();
+    void setDisplay( bool d);
 
 private:
     VideoConferenceP2P* conference;
+    bool display = true;
 };
 
 #endif // RECEIVER_H

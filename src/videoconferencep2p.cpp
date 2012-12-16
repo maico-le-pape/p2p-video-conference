@@ -104,8 +104,18 @@ void VideoConferenceP2P::start()
     sender->start();
     receiver.start();
     rttManager->start();
-    gui->show();
+    if ( display_vc )
+        gui->show();
     gui->start();
 }
 
+void VideoConferenceP2P::display ( bool d )
+{
+    display_vc = d;
+    receiver.setDisplay ( d );
+    if ( d )
+        gui->show();
+    else
+        gui->hide();
+}
 
