@@ -18,22 +18,33 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "core/thread.h"
+#include "user.h"
+#include <QWidget>
 #include <QGridLayout>
+#include <QMap>
+#include <QTimer>
 
 class VideoConferenceP2P;
 
 using namespace Epyx;
 
-class GUI : public Thread {
-
+class GUI : public QWidget {
+    Q_OBJECT
 public:
     GUI(VideoConferenceP2P* vc);
-    void run();
+    void addUser(SockAddress sa);
+    void start();
+    
+private slots:
+    void update();
 
 private:
     VideoConferenceP2P* conference;
     QGridLayout* layout;
+    QMap<SockAddress, QLabel*> videos;
+    QTimer* timer;
+    int line = 0;
+    int column = 0;
 };
 
 #endif // GUI_H

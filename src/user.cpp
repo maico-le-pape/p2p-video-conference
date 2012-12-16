@@ -58,23 +58,37 @@ void User::updateDelay ( short unsigned int delay )
  * @param size size of data to be sent
  * @return number of sent bytes
  */
-void User:: send ( const void *data, int size )
+void User:: send ( const void* data, int size )
 {
-    video_conference.getServer().sendTo (address, data, size );
+    video_conference.getServer().sendTo ( address, data, size );
 }
 
 void User::receive ( FragmentPacket& fp )
 {
-  Frame* f = fragmentManager.eat(fp);
-  if ( f != nullptr)
-    add(f);
+    fragmentManager.eat ( fp );
+    if(fragmentManager.hasCompleteFrame())
+	add(fragmentManager.getCompleteFrame());
 }
 
-void User::add ( Frame* f )
+void User::add ( Frame f )
 {
-  std:cout << "Packet completed" << std::endl;
-  frames.push(*f);
-  delete f;
+    f.setDelay ( delay );
+    frames.push ( f );
+}
+
+QImage User::getLatestFrame ( User::ptime maxTime )
+{
+    QImage image;
+
+    if ( frames.empty() )
+        return image;
+
+    while ( frames.top().getTime() < maxTime ) {
+        image = frames.top().getImage();
+        frames.pop();
+    }
+
+    return image;
 }
 
 

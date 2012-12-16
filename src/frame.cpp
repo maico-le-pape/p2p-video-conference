@@ -19,19 +19,35 @@
 #include <QByteArray>
 #include <QImageReader>
 #include <QBuffer>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
-Frame::Frame ( const unsigned char* data, int size )
+Frame::Frame ( const Epyx::byte_str& data, const Frame::ptime& timestamp ) :
+    timestamp(timestamp)
 {
-    QByteArray message = QByteArray::fromRawData (
-                             reinterpret_cast<const char * > ( data ),
-                             size );
+    QByteArray message = QByteArray(
+                             reinterpret_cast<const char * > ( data.data() ),
+                             data.size());
     QBuffer buffer ( &message );
     QImageReader in ( &buffer, "JPG" );
-    image = in.read();
+    image = in.read().copy();
 }
 
 bool Frame::operator< ( const Frame& B ) const
 {
-    return true;
+    return timestamp < B.timestamp;
 }
 
+QImage Frame::getImage() const
+{
+    return image;
+}
+
+Frame::ptime Frame::getTime() const
+{
+    return timestamp;
+}
+
+void Frame::setDelay ( unsigned int delay )
+{
+    timestamp = timestamp - boost::posix_time::microseconds(delay);
+}

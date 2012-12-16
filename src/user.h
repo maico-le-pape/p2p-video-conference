@@ -27,6 +27,7 @@
 #include "webm/framepacket.h"
 #include "fragmentmanager.h"
 #include <QLabel>
+#include <boost/date_time/posix_time/ptime.hpp>
 
 using namespace std;
 using namespace Epyx;
@@ -36,7 +37,7 @@ class VideoConferenceP2P;
 using namespace Epyx::webm;
 
 class User {
-
+    typedef boost::posix_time::ptime ptime;
 public:
     User ( string, SockAddress, VideoConferenceP2P& vc );
     string getName() const;
@@ -46,7 +47,8 @@ public:
     void updateDelay ( unsigned short int delay );
     void send(const void *data, int size);
     void receive ( FragmentPacket& fp);
-    void add ( Frame* f);
+    void add ( Frame f);
+    QImage getLatestFrame(ptime maxTime);
 
 private:
     string name;

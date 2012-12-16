@@ -23,22 +23,23 @@ FragmentManager::FragmentManager()
 {
 }
 
-Frame* FragmentManager::eat ( FragmentPacket& fp )
+void FragmentManager::eat ( FragmentPacket& fp )
 {
-    if(fragmentList.packetTimestamp != fp.packetTimestamp)
-	fragmentList = FragmentList(fp.packetSize, fp.packetTimestamp);
-    fragmentList.addFragment(fp);
-    
-    if ( fragmentList.isComplete() )
-        return readPacket ( fragmentList.getData() , fp.packetTimestamp );
-    else
-        return nullptr;
+    if ( fragmentList.packetTimestamp != fp.packetTimestamp )
+        fragmentList = FragmentList ( fp.packetSize, fp.packetTimestamp );
+
+    fragmentList.addFragment ( fp );
 }
 
-Frame* FragmentManager::readPacket ( const byte_str& data,
-FragmentManager::ptime time )
+bool FragmentManager::hasCompleteFrame() const
 {
-    return new Frame(data.data(), data.size());
+    return fragmentList.isComplete();
+}
+
+Frame FragmentManager::getCompleteFrame( ) const
+{
+    return Frame ( fragmentList.getData(),
+	boost::posix_time::microsec_clock::local_time());
 }
 
 std::vector< FragmentPacket > FragmentManager::cut ( char* data,
@@ -46,19 +47,24 @@ std::vector< FragmentPacket > FragmentManager::cut ( char* data,
 {
     unsigned int nbOfPackets = size / 1500 + ( size % 1500 == 0 ? 0 : 1 );
     std::vector<FragmentPacket> res;
-    
-    byte_str data_str(reinterpret_cast<unsigned char*>(data), size);
+
+    byte_str data_str ( reinterpret_cast<unsigned char*> ( data ), size );
+    boost::posix_time::ptime time =
+        boost::posix_time::microsec_clock::local_time();
 
     for ( unsigned int i = 0; i < nbOfPackets; i++ ) {
-	byte_str fragmentData;
-	try {
-	     fragmentData = data_str.substr(1500*i, 1500);
-	} catch(std::out_of_range &e) {
-	    std::cout << e.what() << std::endl;
-	}
-        res.insert(res.end(), FragmentPacket ( fragmentData, 
-		boost::posix_time::microsec_clock::local_time(), i, size,
-                                  SockAddress() ));
+        byte_str fragmentData;
+
+        try {
+            fragmentData = data_str.substr ( 1500 * i, 1500 );
+        } catch ( std::out_of_range& e ) {
+            std::cout << e.what() << std::endl;
+        }
+
+        res.insert ( res.end(), FragmentPacket ( fragmentData,
+                     time, i, size,
+                     SockAddress() ) );
     }
+
     return res;
 }

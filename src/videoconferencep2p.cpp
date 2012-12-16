@@ -51,6 +51,7 @@ VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 {
     users.insert ( userEntry ( sa,  User ( u_name,  sa,  *this ) ) );
+    gui->addUser(sa);
 }
 
 void VideoConferenceP2P::printUsers()
@@ -99,6 +100,8 @@ void VideoConferenceP2P::start()
     sender->start();
     receiver.start();
     rttManager->start();
+    gui->show();
+    gui->start();
 }
 
 

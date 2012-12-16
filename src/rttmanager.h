@@ -31,6 +31,7 @@ public:
     RTTManager ( VideoConferenceP2P* vc );
     void processRTT ( const RttReplyPacket& packet );
     void run();
+    unsigned int getMaxDelay() const;
 
 private:
     VideoConferenceP2P* conference;

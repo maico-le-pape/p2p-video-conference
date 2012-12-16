@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.6)
 
 project(p2p-video-conference)
 
@@ -18,6 +18,7 @@ find_package(Qt4 REQUIRED)
 
 include (UseDoxygen)
 include (${QT_USE_FILE})
+set(CMAKE_AUTOMOC true)
 
 link_directories(${Boost_LIBRARY_DIRS})
 include_directories(src contrib ${Boost_INCLUDE_DIRS} ${VPX_INCLUDE_DIRS}
@@ -52,7 +53,7 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
 add_executable(video_conference src/sender.cpp 
-                                 src/fragmentlist.cpp
+                                src/fragmentlist.cpp
 				src/gui.cpp 
 				src/fragmentmanager.cpp 
 				src/frame.cpp 

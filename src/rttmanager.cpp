@@ -77,3 +77,8 @@ void RTTManager::run()
         sleep ( 2 );
     }
 }
+
+unsigned int RTTManager::getMaxDelay() const
+{
+    return maxDelay;
+}

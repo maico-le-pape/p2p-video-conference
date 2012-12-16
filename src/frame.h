@@ -19,15 +19,21 @@
 #define FRAME_H
 
 #include <QImage>
+#include <core/common.h>
+#include <boost/date_time/posix_time/ptime.hpp>
 
 class Frame {
-
+    typedef boost::posix_time::ptime ptime;
 public:
-    Frame ( const unsigned char * data, int size );
+    Frame ( const Epyx::byte_str& data, const ptime& timestamp );
     bool operator< ( const Frame& B ) const;
+    QImage getImage() const;
+    ptime getTime() const;
+    void setDelay(unsigned int delay);
     
 private:
-  QImage image;
+    QImage image;
+    ptime timestamp;
 };
 
 #endif // FRAME_H

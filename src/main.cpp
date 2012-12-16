@@ -19,6 +19,7 @@
 #include "net/sockaddress.h"
 #include "core/log.h"
 #include "boost/lexical_cast.hpp"
+#include <QApplication>
 
 /**
  * @brief ...
@@ -28,6 +29,8 @@
  **/
 int main ( int argc, char*argv[] )
 {
+    QApplication app(argc, argv);
+    
     if ( argc != 3 ) {
         std::cout << "Use : videoconferencep2p n k" << std::endl;
         std::cout << "n is the total number of clients "
@@ -56,9 +59,8 @@ int main ( int argc, char*argv[] )
     }
     //vc.printUsers();
     vc.start();
-    sleep ( 50 );
+    app.exec();
+    sleep(50);
     Epyx::log::debug << "Program ended"  <<  Epyx::log::endl;
     Epyx::log::flushAndQuit();
 }
-
-
