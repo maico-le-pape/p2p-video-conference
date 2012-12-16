@@ -51,8 +51,10 @@ VideoConferenceP2P::VideoConferenceP2P ( SockAddress sa ) : host ( sa ),
 void VideoConferenceP2P::add ( string u_name, SockAddress sa )
 {
     QMutexLocker lock ( &mutex_user );
-    users.insert ( userEntry ( sa,  new User ( u_name,  sa,  *this ) ) );
-    gui->addUser ( sa );
+    User* u =  new User ( u_name,  sa,  *this );
+    gui->addUser ( u );
+    users.insert ( userEntry ( sa,  u ) );
+
 }
 
 void VideoConferenceP2P::printUsers()

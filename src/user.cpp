@@ -18,6 +18,7 @@
 #include "user.h"
 #include "net/udpsocket.h"
 #include "videoconferencep2p.h"
+#include "core/log.h"
 
 User::User ( string s, SockAddress sa, VideoConferenceP2P& vc )
     : video_conference ( vc )
@@ -68,8 +69,10 @@ void User:: send ( const void* data, int size )
 void User::receive ( FragmentPacket& fp )
 {
     fragmentManager.eat ( fp );
-    if ( fragmentManager.hasCompleteFrame() )
+    if ( fragmentManager.hasCompleteFrame() ) {
+        //Epyx::log::info << "New Frame for " << name << Epyx::log::endl;
         add ( fragmentManager.getCompleteFrame() );
+    }
 }
 
 void User::add ( Frame* f )
@@ -82,8 +85,9 @@ QImage User::getLatestFrame ( User::ptime maxTime )
 {
     QImage image;
 
-    if ( frames.empty() )
+    if ( frames.empty() == true) {
         return image;
+    }
 
     while ( frames.top()->getTime() < maxTime ) {
         image = frames.top()->getImage();

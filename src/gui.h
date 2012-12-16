@@ -32,7 +32,7 @@ class GUI : public QWidget {
     Q_OBJECT
 public:
     GUI(VideoConferenceP2P* vc);
-    void addUser(SockAddress sa);
+    void addUser( User* u);
     void start();
     
 private slots:
@@ -41,7 +41,7 @@ private slots:
 private:
     VideoConferenceP2P* conference;
     QGridLayout* layout;
-    QMap<SockAddress, QLabel*> videos;
+    QMap<User*, QLabel*> videos;
     QTimer* timer;
     int line = 0;
     int column = 0;

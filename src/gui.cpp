@@ -35,12 +35,12 @@ GUI::GUI ( VideoConferenceP2P* vc ) : conference ( vc ),
     connect ( timer, SIGNAL ( timeout() ), this, SLOT ( update() ) );
 }
 
-void GUI::addUser ( SockAddress sa )
+void GUI::addUser ( User* u )
 {
     QLabel* video = new QLabel;
     layout->addWidget ( video, line, column );
     QString nameString  =
-        QString::fromStdString ( conference->getUser ( sa )->getName() );
+        QString::fromStdString ( u->getName() );
     QLabel* name = new QLabel ( nameString );
     log::debug << "Adding user " << nameString.toStdString() << log::endl;
     layout->addWidget ( name, line + 1, column++ );
@@ -50,7 +50,7 @@ void GUI::addUser ( SockAddress sa )
         column = 0;
     }
 
-    videos.insert ( sa, video );
+    videos.insert ( u, video );
 }
 
 void GUI::start()
@@ -66,6 +66,5 @@ void GUI::update()
 
     for ( auto it = videos.begin(); it != videos.end(); it++ )
         it.value()->setPixmap (
-            QPixmap::fromImage ( conference->getUser ( it.key() )
-                                 ->getLatestFrame ( maxTime ) ) ) ;
+            QPixmap::fromImage ( it.key() ->getLatestFrame ( maxTime ) ) ) ;
 }
