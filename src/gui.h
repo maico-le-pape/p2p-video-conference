@@ -23,6 +23,7 @@
 #include <QGridLayout>
 #include <QMap>
 #include <QTimer>
+#include "autoresizeimageview.h"
 
 class VideoConferenceP2P;
 
@@ -41,7 +42,7 @@ private slots:
 private:
     VideoConferenceP2P* conference;
     QGridLayout* layout;
-    QMap<User*, QLabel*> videos;
+    QMap<User*, AutoResizeImageView*> videos;
     QTimer* timer;
     int line = 0;
     int column = 0;

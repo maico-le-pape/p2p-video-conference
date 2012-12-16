@@ -37,7 +37,7 @@ GUI::GUI ( VideoConferenceP2P* vc ) : conference ( vc ),
 
 void GUI::addUser ( User* u )
 {
-    QLabel* video = new QLabel;
+    AutoResizeImageView* video = new AutoResizeImageView;
     layout->addWidget ( video, line, column );
     QString nameString  =
         QString::fromStdString ( u->getName() );
@@ -65,6 +65,9 @@ void GUI::update()
               milliseconds ( conference->getRTTManager()->getMaxDelay() );
 
     for ( auto it = videos.begin(); it != videos.end(); it++ )
-        it.value()->setPixmap (
-            QPixmap::fromImage ( it.key() ->getLatestFrame ( maxTime ) ) ) ;
+    {
+	QImage image = it.key()->getLatestFrame(maxTime);
+	if(!image.isNull())
+	    it.value()->setImage(image);
+    }
 }

@@ -52,7 +52,8 @@ add_library(epyx STATIC src/core/actor-manager.cpp
 			
 target_link_libraries(epyx ${Boost_LIBRARIES})
 
-add_executable(video_conference src/sender.cpp 
+add_executable(video_conference src/autoresizeimageview.cpp
+				src/sender.cpp 
                                 src/fragmentlist.cpp
 				src/gui.cpp 
 				src/fragmentmanager.cpp 
