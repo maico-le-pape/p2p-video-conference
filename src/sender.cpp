@@ -19,6 +19,7 @@
 #include "videoconferencep2p.h"
 #include <iostream>
 #include "boost/lexical_cast.hpp"
+#include <QApplication>
 
 const int sendingDelay = 1000 / 24;
 
@@ -69,6 +70,7 @@ void Sender::run()
         delete[] memblock;
         usleep ( sendingDelay*1000 );
     }
+    qApp->quit();
 }
 
 

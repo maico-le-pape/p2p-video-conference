@@ -12,6 +12,7 @@ class AutoResizeImageView : public QGraphicsView
 public:
     explicit AutoResizeImageView(QWidget *parent = 0);
     void setImage(const QImage &image);
+    void setDelayed(bool delayed);
     
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -19,6 +20,8 @@ protected:
 private:
     QGraphicsScene* m_scene;
     QGraphicsItem* m_imageItem;
+    QGraphicsItem* m_border;
+    bool m_delayed;
 };
 
 #endif // AUTORESIZEIMAGEVIEW_H

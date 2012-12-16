@@ -64,10 +64,16 @@ void GUI::update()
     maxTime = maxTime +
               milliseconds ( conference->getRTTManager()->getMaxDelay() );
 
-    for ( auto it = videos.begin(); it != videos.end(); it++ )
-    {
-	QImage image = it.key()->getLatestFrame(maxTime);
-	if(!image.isNull())
-	    it.value()->setImage(image);
+    for ( auto it = videos.begin(); it != videos.end(); it++ ) {
+        QImage image = it.key()->getLatestFrame ( maxTime );
+
+        if ( !image.isNull() ) {
+            if ( it.key()->getDelay() > RTTManager::threshold )
+                it.value()->setDelayed ( true );
+            else
+                it.value()->setDelayed ( false );
+
+            it.value()->setImage ( image );
+        }
     }
 }

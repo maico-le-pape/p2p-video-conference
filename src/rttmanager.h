@@ -32,11 +32,11 @@ public:
     void processRTT ( const RttReplyPacket& packet );
     void run();
     unsigned int getMaxDelay() const;
+    static const unsigned int threshold = 200;
 
 private:
     VideoConferenceP2P* conference;
     unsigned int maxDelay = 0;
-    static const unsigned int threshold = 200;
 };
 
 #endif // RTTMANAGER_H
