@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 # Assign various delays
 delays = [ [ random.randint(args.min, args.max) for i in range(args.users) ] for j in range(args.users) ]
-
+ 
 # Make matrix symmetric
 for i in range(args.users):
 	for j in range(i):

@@ -33,7 +33,7 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
 
 
     if ( delay > maxDelay && delay < threshold ) {
-	
+
         maxDelay = delay;
         /* Epyx::log::debug << "Max delay updated " <<
                           previousDelay << " => "<<
@@ -54,14 +54,14 @@ void RTTManager::processRTT ( const RttReplyPacket& packet )
                 }
             }
         }
-
-        conference->updateDelay ( packet.source, delay );
-
-        /* Epyx::log::debug << "RTT update for " <<
-                         packet.source.getPort() <<
-                         " set to "<<
-                         delay << Epyx::log::endl; */
     }
+
+    conference->updateDelay ( packet.source, delay );
+
+    /* Epyx::log::debug << "RTT update for " <<
+                     packet.source.getPort() <<
+                     " set to "<<
+                     delay << Epyx::log::endl; */
 }
 
 void RTTManager::run()

@@ -32,7 +32,7 @@ public:
     void processRTT ( const RttReplyPacket& packet );
     void run();
     unsigned int getMaxDelay() const;
-    static const unsigned int threshold = 700;
+    static const unsigned int threshold = 1700;
 
 private:
     VideoConferenceP2P* conference;

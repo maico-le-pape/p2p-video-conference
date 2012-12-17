@@ -21,8 +21,10 @@
 #include <QBuffer>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-Frame::Frame ( const Epyx::byte_str& data, const Frame::ptime& timestamp ) :
-    timestamp(timestamp)
+Frame::Frame ( const Epyx::byte_str& data, const Frame::ptime& timestamp,
+	       const ptime& rt):
+    timestamp(timestamp),
+    realTime(rt)
 {
     QByteArray message = QByteArray(
                              reinterpret_cast<const char * > ( data.data() ),
@@ -49,5 +51,7 @@ Frame::ptime Frame::getTime() const
 
 void Frame::setDelay ( unsigned int delay )
 {
-    timestamp = timestamp - boost::posix_time::microseconds(delay);
+    //std::cout << delay << ":" << (realTime - timestamp) << "   ";
+    timestamp = timestamp - boost::posix_time::milliseconds(delay);
+    //std::cout << (realTime - timestamp) << std::endl;
 }

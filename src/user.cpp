@@ -91,9 +91,9 @@ QImage User::getLatestFrame ( User::ptime maxTime )
         return image;
     }
 
-    while ( ! ( frames.empty() ) && frames.top()->getTime() < maxTime ) {
-      std::cout << "Sending new frame" << std::endl;
-      std::cout << "Taille pile : " << frames.size() << std::endl;
+    while ( ! ( frames.empty() ) && frames.top()->getTime() <= maxTime ) {
+        // std::cout << "Sending new frame" << std::endl;
+        // std::cout << "Taille pile : " << frames.size() << std::endl;
         Frame* frame = frames.top();
         image = frame->getImage();
         frames.pop();

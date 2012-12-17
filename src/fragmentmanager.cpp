@@ -39,7 +39,9 @@ bool FragmentManager::hasCompleteFrame() const
 Frame* FragmentManager::getCompleteFrame( ) const
 {
     return new Frame ( fragmentList.getData(),
-	boost::posix_time::microsec_clock::local_time());
+	boost::posix_time::microsec_clock::local_time(),
+	fragmentList.packetTimestamp
+ 		    );
 }
 
 std::vector< FragmentPacket > FragmentManager::cut ( char* data,

@@ -101,12 +101,14 @@ RTTManager* VideoConferenceP2P::getRTTManager()
 
 void VideoConferenceP2P::start()
 {
-    sender->start();
+
     receiver.start();
     rttManager->start();
     if ( display_vc )
         gui->show();
     gui->start();
+    usleep ( 5000 );
+    sender->start();
 }
 
 void VideoConferenceP2P::display ( bool d )

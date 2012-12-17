@@ -62,15 +62,15 @@ void GUI::update()
 {
     ptime maxTime = microsec_clock::local_time();
     maxTime = maxTime -
-              milliseconds ( conference->getRTTManager()->getMaxDelay() );
+              milliseconds ( RTTManager::threshold );
     setWindowTitle ( QString::number (
-conference->getRTTManager()->getMaxDelay() ) );
+                         conference->getRTTManager()->getMaxDelay() ) );
 
     for ( auto it = videos.begin(); it != videos.end(); it++ ) {
         QImage image = it.key()->getLatestFrame ( maxTime );
 
         if ( !image.isNull() ) {
-	  std::cout << "Displaying new frame" << std::endl;
+            //std::cout << "Displaying new frame" << std::endl;
             if ( it.key()->getDelay() > RTTManager::threshold )
                 it.value()->setDelayed ( true );
             else
