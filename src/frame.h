@@ -40,7 +40,7 @@ private:
 struct FrameCompare : public std::binary_function<Frame*, Frame*, bool>
 {
     bool operator()(const Frame* a, const Frame* b) {
-	return *a < *b;
+	return !(*a < *b);
     }
 };
 
